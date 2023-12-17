@@ -1,5 +1,6 @@
 package net.coma.ccode.database;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -13,9 +14,9 @@ public abstract class DatabaseManager {
 
     public abstract boolean exists(@NotNull String name);
 
-    public abstract void redeemCode(@NotNull String name, @NotNull Player player);
+    public abstract void redeemCode(@NotNull String name, @NotNull OfflinePlayer player);
 
-    public abstract boolean isRedeemed(@NotNull String code, @NotNull Player player);
+    public abstract boolean isRedeemed(@NotNull String code, @NotNull OfflinePlayer player);
 
     public abstract boolean isUsesZero(@NotNull String code);
 

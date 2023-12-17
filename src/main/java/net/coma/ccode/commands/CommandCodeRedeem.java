@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@CommandInfo(name = "redeem", requiresPlayer = true)
+@CommandInfo(name = "redeem", requiresPlayer = false)
 public class CommandCodeRedeem extends PluginCommand {
 
     public CommandCodeRedeem() {
@@ -17,6 +17,7 @@ public class CommandCodeRedeem extends PluginCommand {
 
     @Override
     public boolean run(@NotNull CommandSender sender, @NotNull String[] args) {
+
         if (args.length == 0) {
             sender.sendMessage(MessageKeys.REDEEM_RIGHT_USAGE);
             return true;

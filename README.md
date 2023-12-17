@@ -4,11 +4,10 @@ This project is not server-public. In these codes I try out new methods for me. 
 
 # In the latest commit...
 
-- First Commit
-
+- I fixed the error which is related to the /redeem command.
+- - I fixed the static problem related to the PluginCommand.java
+- I changed the Player to OfflinePlayer in the MySQL.java
 
 # TODO
 
-- Make constant IDs for the codes.
-- Change the Player to OfflinePlayer in MySQL.java
-- Fix the commands
+- CURRENTLY, everything is as I planned

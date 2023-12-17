@@ -4,8 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.coma.ccode.CCode;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
@@ -118,7 +118,7 @@ public class MySQL extends DatabaseManager {
     }
 
     @Override
-    public void redeemCode(@NotNull String name, @NotNull Player player) {
+    public void redeemCode(@NotNull String name, @NotNull OfflinePlayer player) {
         String selectQuery = "SELECT USES, CMD, PLAYERS FROM code WHERE CODE = ?";
         String updateQuery = "UPDATE code SET USES = USES - 1, PLAYERS = CONCAT(PLAYERS, ?, ', ') WHERE CODE = ?";
         String deleteQuery = "DELETE FROM code WHERE CODE = ?";
@@ -151,7 +151,7 @@ public class MySQL extends DatabaseManager {
                     updateStatement.executeUpdate();
                 }
 
-                if (!command.isEmpty()) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                if (!command.isEmpty()) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", Objects.requireNonNull(player.getName())));
             }
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
@@ -159,7 +159,7 @@ public class MySQL extends DatabaseManager {
     }
 
     @Override
-    public boolean isRedeemed(@NotNull String code, @NotNull Player player) {
+    public boolean isRedeemed(@NotNull String code, @NotNull OfflinePlayer player) {
         String selectQuery = "SELECT PLAYERS FROM code WHERE CODE = ?";
 
         try {
@@ -169,7 +169,7 @@ public class MySQL extends DatabaseManager {
                 ResultSet resultSet = selectStatement.executeQuery();
                 if (resultSet.next()) {
                     String playersList = resultSet.getString("PLAYERS");
-                    if (playersList != null && playersList.contains(player.getName())) return true;
+                    if (playersList != null && playersList.contains(Objects.requireNonNull(player.getName()))) return true;
                 }
             }
         } catch (SQLException exception) {

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public abstract class PluginCommand extends Command {
-    private static CommandInfo commandInfo;
+    private final CommandInfo commandInfo;
 
     public PluginCommand(@NotNull String name) {
         super(name);
