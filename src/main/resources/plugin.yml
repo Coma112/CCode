@@ -1,0 +1,4 @@
+name: CCode
+version: '${version}'
+main: net.coma.ccode.CCode
+api-version: 1.20
