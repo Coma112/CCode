@@ -1,7 +1,7 @@
 package net.coma.ccode.commands;
 
 import net.coma.ccode.CCode;
-import net.coma.ccode.Code;
+import net.coma.ccode.managers.Code;
 import net.coma.ccode.language.MessageKeys;
 import net.coma.ccode.subcommand.CommandInfo;
 import net.coma.ccode.subcommand.PluginCommand;

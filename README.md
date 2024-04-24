@@ -6,7 +6,7 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 
 # Last commit 💯
 
-- I created a logo for the plugin.
+- I updated the gradle.
 
 # Server Status ✅
 
