@@ -1,13 +1,18 @@
-# Description
+![alt text](https://cdn.discordapp.com/attachments/1171500295679913997/1232824754294231171/ccodelogotr.png?ex=662add06&is=66298b86&hm=de53756640e2b885067f43d20ae1acd4e028a1031230710b9951bcdceeae767c&)
 
-This project is not server-public. In these codes I try out new methods for me. But it is still nice tho.
+# Description ❓
 
-# In the latest commit...
+This is a Minecraft plugin coded in spigot with the Paper framework. It replaces the physical vouchers with digital (in database) vouchers for a better security.
 
-- I fixed the error which is related to the /redeem command.
-- - I fixed the static problem related to the PluginCommand.java
-- I changed the Player to OfflinePlayer in the MySQL.java
+# Last commit 💯
 
-# TODO
+- I created a logo for the plugin.
 
-- CURRENTLY, everything is as I planned
+# Server Status ✅
+
+- 🟩 WORKING
+
+# Sources I used 🌐
+
+- ❇️ W3Schools.com
+- ❇️ spigotmc.org
