@@ -1,4 +1,4 @@
-![alt text](https://cdn.discordapp.com/attachments/1171500295679913997/1232824754294231171/ccodelogotr.png?ex=662add06&is=66298b86&hm=de53756640e2b885067f43d20ae1acd4e028a1031230710b9951bcdceeae767c&)
+![alt text](https://cdn.discordapp.com/attachments/1171500295679913997/1232826466614509578/ccodelogo.png?ex=662ade9e&is=66298d1e&hm=bfd6471686c2eab226e1480b2f997a17913dbfc8c57dfa4690d8477fe449a38e&)
 
 # Description ❓
 
