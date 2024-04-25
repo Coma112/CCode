@@ -70,7 +70,7 @@ public class MySQL extends DatabaseManager {
     }
 
     public void createTable() {
-        String query = "CREATE TABLE IF NOT EXISTS code (CODE VARCHAR(255) NOT NULL, CMD VARCHAR(255) NOT NULL, USES INT, PLAYERS VARCHAR(255) NOT NULL, PRIMARY KEY (CODE))";
+        String query = "CREATE TABLE IF NOT EXISTS code (CODE VARCHAR(255) NOT NULL, CMD VARCHAR(255) NOT NULL, USES INT, PLAYERS VARCHAR(255), OWNERS VARCHAR(255), PRIMARY KEY (CODE))";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.execute();
@@ -119,14 +119,14 @@ public class MySQL extends DatabaseManager {
 
     @Override
     public void redeemCode(@NotNull String name, @NotNull OfflinePlayer player) {
-        String selectQuery = "SELECT USES, CMD, PLAYERS FROM code WHERE CODE = ?";
+        String selectQuery = "SELECT USES, CMD, PLAYERS, OWNERS FROM code WHERE CODE = ?";
         String updateQuery = "UPDATE code SET USES = USES - 1, PLAYERS = CONCAT(PLAYERS, ?, ', ') WHERE CODE = ?";
         String deleteQuery = "DELETE FROM code WHERE CODE = ?";
+        String updateOwnersQuery = "UPDATE code SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(CONCAT(', ', OWNERS, ', '), CONCAT(', ', ?, ', '), ', ')) WHERE CODE = ?";
 
         try {
             int currentUses = 0;
             String command = "";
-            String currentPlayers = "";
 
             try (PreparedStatement selectStatement = getConnection().prepareStatement(selectQuery)) {
                 selectStatement.setString(1, name);
@@ -135,7 +135,6 @@ public class MySQL extends DatabaseManager {
                 if (resultSet.next()) {
                     currentUses = resultSet.getInt("USES");
                     command = resultSet.getString("CMD");
-                    currentPlayers = resultSet.getString("PLAYERS");
                 }
             }
 
@@ -151,7 +150,28 @@ public class MySQL extends DatabaseManager {
                     updateStatement.executeUpdate();
                 }
 
+                try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
+                    updateOwnersStatement.setString(1, player.getName());
+                    updateOwnersStatement.setString(2, name);
+                    updateOwnersStatement.executeUpdate();
+                }
+
                 if (!command.isEmpty()) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", Objects.requireNonNull(player.getName())));
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
+    public void giveCode(@NotNull String code, @NotNull OfflinePlayer player) {
+        String updateOwnersQuery = "UPDATE code SET OWNERS = CONCAT(IFNULL(OWNERS,''), ?, ', ') WHERE CODE = ?";
+
+        try {
+            try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
+                updateOwnersStatement.setString(1, player.getName());
+                updateOwnersStatement.setString(2, code);
+                updateOwnersStatement.executeUpdate();
             }
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
@@ -170,6 +190,27 @@ public class MySQL extends DatabaseManager {
                 if (resultSet.next()) {
                     String playersList = resultSet.getString("PLAYERS");
                     if (playersList != null && playersList.contains(Objects.requireNonNull(player.getName()))) return true;
+                }
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isOwned(@NotNull String code, @NotNull OfflinePlayer player) {
+        String selectQuery = "SELECT OWNERS FROM code WHERE CODE = ?";
+
+        try {
+            try (PreparedStatement selectStatement = getConnection().prepareStatement(selectQuery)) {
+                selectStatement.setString(1, code);
+
+                ResultSet resultSet = selectStatement.executeQuery();
+                if (resultSet.next()) {
+                    String ownersList = resultSet.getString("OWNERS");
+                    return ownersList != null && ownersList.contains(Objects.requireNonNull(player.getName()));
                 }
             }
         } catch (SQLException exception) {

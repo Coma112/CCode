@@ -10,6 +10,7 @@ public class MessageKeys {
     public static String RELOAD = PREFIX + getString("messages.reload");
     public static String PLAYER_REQUIRED = PREFIX + getString("messages.player-required");
     public static String CREATE_RIGHT_USAGE = PREFIX + getString("messages.create-right-usage");
+    public static String GIVE_RIGHT_USAGE = PREFIX + getString("messages.give-right-usage");
     public static String ALREADY_EXISTS = PREFIX + getString("messages.already-created");
     public static String CANT_BE_NEGATIVE = PREFIX + getString("messages.cant-be-negative");
     public static String CREATED = PREFIX + getString("messages.created");
@@ -25,6 +26,9 @@ public class MessageKeys {
     public static String EDIT_USES = PREFIX + getString("messages.edit-uses");
     public static String EDIT_NAME = PREFIX + getString("messages.edit-name");
     public static String EDIT_RIGHT_USAGE = PREFIX + getString("messages.edit-right-usage");
+    public static String NOT_AN_OWNER = PREFIX + getString("messages.not-an-owner");
+    public static String ALREADY_AN_OWNER = PREFIX + getString("messages.already-owner");
+    public static String SUCCESSFUL_GIVE = PREFIX + getString("messages.successful-give");
 
     private static String getString(@NotNull String path) {
         return MessageProcessor.process(CCode.getInstance().getLanguage().getString(path));

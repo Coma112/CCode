@@ -6,7 +6,9 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 
 # Last commit 💯
 
-- I updated the gradle.
+- I created a report command.
+- I fixed the command problem.
+- I added a command to give permission to the code for the player.
 
 # Server Status ✅
 

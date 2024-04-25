@@ -1,10 +1,7 @@
 package net.coma.ccode.utils;
 
 import net.coma.ccode.CCode;
-import net.coma.ccode.commands.CommandCodeCreate;
-import net.coma.ccode.commands.CommandCodeDelete;
-import net.coma.ccode.commands.CommandCodeEdit;
-import net.coma.ccode.commands.CommandCodeRedeem;
+import net.coma.ccode.commands.*;
 import net.coma.ccode.subcommand.PluginCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -34,6 +31,8 @@ public class CommandRegister {
         commandClasses.add(CommandCodeRedeem.class);
         commandClasses.add(CommandCodeDelete.class);
         commandClasses.add(CommandCodeEdit.class);
+        commandClasses.add(CommandReload.class);
+        commandClasses.add(CommandCodeGive.class);
 
         return commandClasses;
     }

@@ -18,6 +18,7 @@ public class Language extends ConfigUtils {
         yml.addDefault("messages.player-required", "&cPlayer is required!");
         yml.addDefault("messages.create-right-usage", "&cUsage: /codecreate [name] [uses] [cmd]");
         yml.addDefault("messages.edit-right-usage", "&cUsage: /codeedit [name] name|uses|cmd [new cmd|uses|name]");
+        yml.addDefault("messages.give-right-usage", "&cUsage: /codegive [name] [player]");
         yml.addDefault("messages.already-created", "&cThis code is already exists!");
         yml.addDefault("messages.usage-redeem", "&cUsage: /redeem [name]");
         yml.addDefault("messages.usage-delete", "&cUsage: /deletecode [name]");
@@ -32,6 +33,9 @@ public class Language extends ConfigUtils {
         yml.addDefault("messages.edit-cmd", "&aYou have successfully changed the command of the code!");
         yml.addDefault("messages.edit-uses", "&aYou have successfully changed the uses of the code!");
         yml.addDefault("messages.edit-name", "&aYou have successfully changed the name of the code!");
+        yml.addDefault("messages.not-an-owner", "&cYou are not an owner of this code!");
+        yml.addDefault("messages.already-owner", "&cThe player is already an owner!");
+        yml.addDefault("messages.successful-give", "&aYou have successfully gave the player permission to the code!");
 
         yml.options().copyDefaults(true);
         save();

@@ -24,7 +24,7 @@ public final class CCode extends JavaPlugin {
         instance = this;
 
         initializeComponents();
-        registerEventsAndCommands();
+        CommandRegister.registerCommands();
         initializeDatabaseManager();
 
         MySQL mysql = (MySQL) databaseManager;
@@ -47,10 +47,6 @@ public final class CCode extends JavaPlugin {
     private void initializeComponents() {
         language = new Language();
         config = new Config();
-    }
-
-    private void registerEventsAndCommands() {
-        CommandRegister.registerCommands();
     }
 
     private void initializeDatabaseManager() {

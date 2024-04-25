@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@CommandInfo(name = "redeem", requiresPlayer = false)
+@CommandInfo(name = "redeem", requiresPlayer = true)
 public class CommandCodeRedeem extends PluginCommand {
 
     public CommandCodeRedeem() {
@@ -16,32 +16,37 @@ public class CommandCodeRedeem extends PluginCommand {
     }
 
     @Override
-    public boolean run(@NotNull CommandSender sender, @NotNull String[] args) {
+    public boolean run(@NotNull Player player, @NotNull String[] args) {
 
         if (args.length == 0) {
-            sender.sendMessage(MessageKeys.REDEEM_RIGHT_USAGE);
+            player.sendMessage(MessageKeys.REDEEM_RIGHT_USAGE);
             return true;
         }
 
         String name = args[0];
 
         if (!CCode.getDatabaseManager().exists(name)) {
-            sender.sendMessage(MessageKeys.NOT_EXISTS);
+            player.sendMessage(MessageKeys.NOT_EXISTS);
             return true;
         }
 
-        if (CCode.getDatabaseManager().isRedeemed(name, (Player) sender)) {
-            sender.sendMessage(MessageKeys.ALREADY_REDEEMED);
+        if (CCode.getDatabaseManager().isRedeemed(name, player)) {
+            player.sendMessage(MessageKeys.ALREADY_REDEEMED);
             return true;
         }
 
         if (CCode.getDatabaseManager().isUsesZero(name)) {
-            sender.sendMessage(MessageKeys.USES_ZERO);
+            player.sendMessage(MessageKeys.USES_ZERO);
             return true;
         }
 
-        CCode.getDatabaseManager().redeemCode(name, (Player) sender);
-        sender.sendMessage(MessageKeys.REDEEMED);
+        if (!CCode.getDatabaseManager().isOwned(name, player)) {
+            player.sendMessage(MessageKeys.NOT_AN_OWNER);
+            return true;
+        }
+
+        CCode.getDatabaseManager().redeemCode(name, player);
+        player.sendMessage(MessageKeys.REDEEMED);
         return true;
     }
 }
