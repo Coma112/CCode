@@ -1,9 +1,12 @@
 package net.coma.ccode.database;
 
+import net.coma.ccode.managers.Code;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public abstract class DatabaseManager {
     public abstract boolean isConnected();
@@ -31,6 +34,8 @@ public abstract class DatabaseManager {
     public abstract void changeCommand(@NotNull String name, @NotNull String newCommand);
 
     public abstract void changeUses(@NotNull String name, int newUses);
+
+    public abstract List<Code> getCodes(@NotNull OfflinePlayer player);
 
     public abstract void reconnect(@NotNull ConfigurationSection section);
 }

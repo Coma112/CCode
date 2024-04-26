@@ -3,6 +3,7 @@ package net.coma.ccode.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.coma.ccode.CCode;
+import net.coma.ccode.managers.Code;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -299,6 +302,29 @@ public class MySQL extends DatabaseManager {
             throw new RuntimeException(exception);
         }
     }
+
+    @Override
+    public List<Code> getCodes(@NotNull OfflinePlayer player) {
+        List<Code> codes = new ArrayList<>();
+
+        String query = "SELECT * FROM code WHERE USES >= 1 AND OWNERS LIKE ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, "%" + player.getName() + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("CODE");
+                String command = resultSet.getString("CMD");
+                int uses = resultSet.getInt("USES");
+                codes.add(new Code(name, command, uses));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return codes;
+    }
+
 
 
     @Override

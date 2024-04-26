@@ -6,9 +6,14 @@ import net.coma.ccode.database.DatabaseManager;
 import net.coma.ccode.database.MySQL;
 import net.coma.ccode.language.Language;
 import net.coma.ccode.utils.CommandRegister;
+import net.coma.ccode.utils.ListenerRegister;
+import net.coma.ccode.utils.MenuUtils;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Objects;
 
 public final class CCode extends JavaPlugin {
@@ -18,13 +23,14 @@ public final class CCode extends JavaPlugin {
     private static DatabaseManager databaseManager;
     private static Config config;
     private static Language language;
+    private static final HashMap<Player, MenuUtils> menuMap = new HashMap<>();
 
     @Override
     public void onEnable() {
         instance = this;
 
         initializeComponents();
-        CommandRegister.registerCommands();
+        registerListenersAndCommands();
         initializeDatabaseManager();
 
         MySQL mysql = (MySQL) databaseManager;
@@ -36,17 +42,14 @@ public final class CCode extends JavaPlugin {
         if (databaseManager != null) databaseManager.disconnect();
     }
 
-    public Config getConfigFile() {
-        return config;
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
     private void initializeComponents() {
         language = new Language();
         config = new Config();
+    }
+
+    private void registerListenersAndCommands() {
+        ListenerRegister.registerEvents();
+        CommandRegister.registerCommands();
     }
 
     private void initializeDatabaseManager() {
@@ -56,4 +59,26 @@ public final class CCode extends JavaPlugin {
             throw new RuntimeException(exception);
         }
     }
+
+    public MenuUtils getMenuUtils(@NotNull Player player) {
+        MenuUtils menuUtils;
+        if (!(menuMap.containsKey(player))) {
+
+            menuUtils = new MenuUtils(player);
+            menuMap.put(player, menuUtils);
+
+            return menuUtils;
+        } else {
+            return menuMap.get(player);
+        }
+    }
+
+    public Config getConfigFile() {
+        return config;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
 }

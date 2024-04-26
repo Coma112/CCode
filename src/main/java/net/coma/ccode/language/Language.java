@@ -12,7 +12,7 @@ public class Language extends ConfigUtils {
 
         YamlConfiguration yml = getYml();
 
-        yml.addDefault("prefix", "&a&lCODE &8| ");
+        yml.addDefault("prefix", "&b&lCODE &8| ");
         yml.addDefault("messages.no-permission", "&cYou do not have permission to do this!");
         yml.addDefault("messages.reload", "&aI have successfully reloaded the files!");
         yml.addDefault("messages.player-required", "&cPlayer is required!");
@@ -36,6 +36,9 @@ public class Language extends ConfigUtils {
         yml.addDefault("messages.not-an-owner", "&cYou are not an owner of this code!");
         yml.addDefault("messages.already-owner", "&cThe player is already an owner!");
         yml.addDefault("messages.successful-give", "&aYou have successfully gave the player permission to the code!");
+        yml.addDefault("messages.first-page", "&cYou are already on the first page!");
+        yml.addDefault("messages.last-page", "&cYou are already on the last page!");
+
 
         yml.options().copyDefaults(true);
         save();

@@ -29,6 +29,9 @@ public class MessageKeys {
     public static String NOT_AN_OWNER = PREFIX + getString("messages.not-an-owner");
     public static String ALREADY_AN_OWNER = PREFIX + getString("messages.already-owner");
     public static String SUCCESSFUL_GIVE = PREFIX + getString("messages.successful-give");
+    public static String FIRST_PAGE = PREFIX + getString("messages.first-page");
+    public static String LAST_PAGE = PREFIX + getString("messages.last-page");
+
 
     private static String getString(@NotNull String path) {
         return MessageProcessor.process(CCode.getInstance().getLanguage().getString(path));

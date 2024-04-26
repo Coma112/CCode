@@ -75,6 +75,13 @@ public class ConfigUtils implements IConfig {
     }
 
     @Override
+    public List<String> getLoreList(@NotNull String path) {
+        return getList(path).stream()
+                .map(MessageProcessor::process)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public boolean getBoolean(@NotNull String path) {
         return yml.getBoolean(path);
     }
@@ -104,3 +111,4 @@ public class ConfigUtils implements IConfig {
         this.name = name;
     }
 }
+

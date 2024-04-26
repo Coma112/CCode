@@ -33,6 +33,7 @@ public class CommandRegister {
         commandClasses.add(CommandCodeEdit.class);
         commandClasses.add(CommandReload.class);
         commandClasses.add(CommandCodeGive.class);
+        commandClasses.add(CommandCodesMenu.class);
 
         return commandClasses;
     }

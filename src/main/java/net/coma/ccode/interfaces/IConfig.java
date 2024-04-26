@@ -18,6 +18,8 @@ public interface IConfig {
 
     List<String> getList(@NotNull String path);
 
+    List<String> getLoreList(@NotNull String path);
+
     boolean getBoolean(@NotNull String path);
 
     int getInt(@NotNull String path);

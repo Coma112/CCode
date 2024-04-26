@@ -6,9 +6,7 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 
 # Last commit 💯
 
-- I created a report command.
-- I fixed the command problem.
-- I added a command to give permission to the code for the player.
+- I added a menu where the players can see their own codes and redeem them avoiding the dupe glitches.
 
 # Server Status ✅
 
@@ -16,5 +14,6 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 
 # Sources I used 🌐
 
-- ❇️ W3Schools.com
-- ❇️ spigotmc.org
+- ❇️ https://W3Schools.com
+- ❇️ https://spigotmc.org
+- ❇️ https://stackoverflow.com/
