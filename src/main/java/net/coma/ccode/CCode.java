@@ -62,15 +62,16 @@ public final class CCode extends JavaPlugin {
 
     public MenuUtils getMenuUtils(@NotNull Player player) {
         MenuUtils menuUtils;
+
         if (!(menuMap.containsKey(player))) {
 
             menuUtils = new MenuUtils(player);
             menuMap.put(player, menuUtils);
 
             return menuUtils;
-        } else {
-            return menuMap.get(player);
         }
+
+        return menuMap.get(player);
     }
 
     public Config getConfigFile() {

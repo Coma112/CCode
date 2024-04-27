@@ -6,7 +6,8 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 
 # Last commit 💯
 
-- I removed the PLAYERS from the database because it was unnecessary
+- I updated the code
+- I deleted the log files
 
 # Server Status ✅
 
