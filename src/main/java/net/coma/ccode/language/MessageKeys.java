@@ -18,7 +18,6 @@ public class MessageKeys {
     public static String REDEEM_RIGHT_USAGE = PREFIX + getString("messages.usage-redeem");
     public static String USES_ZERO = PREFIX + getString("messages.uses-zero");
     public static String NEED_NUMBER = PREFIX + getString("messages.need-number");
-    public static String ALREADY_REDEEMED = PREFIX + getString("messages.already-redeemed");
     public static String NOT_EXISTS = PREFIX + getString("messages.not-exists");
     public static String DELETED = PREFIX + getString("messages.deleted");
     public static String DELETE_RIGHT_USAGE = PREFIX + getString("messages.usage-delete");

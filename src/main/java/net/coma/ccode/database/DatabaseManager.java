@@ -21,8 +21,6 @@ public abstract class DatabaseManager {
 
     public abstract void giveCode(@NotNull String code, @NotNull OfflinePlayer player);
 
-    public abstract boolean isRedeemed(@NotNull String code, @NotNull OfflinePlayer player);
-
     public abstract boolean isOwned(@NotNull String code, @NotNull OfflinePlayer player);
 
     public abstract boolean isUsesZero(@NotNull String code);

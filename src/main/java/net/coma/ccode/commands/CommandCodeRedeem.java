@@ -30,11 +30,6 @@ public class CommandCodeRedeem extends PluginCommand {
             return true;
         }
 
-        if (CCode.getDatabaseManager().isRedeemed(name, player)) {
-            player.sendMessage(MessageKeys.ALREADY_REDEEMED);
-            return true;
-        }
-
         if (CCode.getDatabaseManager().isUsesZero(name)) {
             player.sendMessage(MessageKeys.USES_ZERO);
             return true;

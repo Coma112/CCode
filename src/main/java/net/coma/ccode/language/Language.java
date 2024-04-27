@@ -22,7 +22,6 @@ public class Language extends ConfigUtils {
         yml.addDefault("messages.already-created", "&cThis code is already exists!");
         yml.addDefault("messages.usage-redeem", "&cUsage: /redeem [name]");
         yml.addDefault("messages.usage-delete", "&cUsage: /deletecode [name]");
-        yml.addDefault("messages.already-redeemed", "&cYou have already redeemed this code!");
         yml.addDefault("messages.redeemed", "&aYou have successfully redeemed this code!");
         yml.addDefault("messages.deleted", "&aYou have successfully deleted this code!");
         yml.addDefault("messages.need-number", "&cYou need to type in a number!");

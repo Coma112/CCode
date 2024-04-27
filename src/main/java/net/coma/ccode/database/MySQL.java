@@ -2,6 +2,7 @@ package net.coma.ccode.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.Getter;
 import net.coma.ccode.CCode;
 import net.coma.ccode.managers.Code;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+@Getter
 public class MySQL extends DatabaseManager {
     private final Connection connection;
 
@@ -67,18 +69,18 @@ public class MySQL extends DatabaseManager {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                throw new RuntimeException(exception);
             }
         }
     }
 
     public void createTable() {
-        String query = "CREATE TABLE IF NOT EXISTS code (CODE VARCHAR(255) NOT NULL, CMD VARCHAR(255) NOT NULL, USES INT, PLAYERS VARCHAR(255), OWNERS VARCHAR(255), PRIMARY KEY (CODE))";
+        String query = "CREATE TABLE IF NOT EXISTS code (CODE VARCHAR(255) NOT NULL, CMD VARCHAR(255) NOT NULL, USES INT, OWNERS VARCHAR(255), PRIMARY KEY (CODE))";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.execute();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -122,8 +124,8 @@ public class MySQL extends DatabaseManager {
 
     @Override
     public void redeemCode(@NotNull String name, @NotNull OfflinePlayer player) {
-        String selectQuery = "SELECT USES, CMD, PLAYERS, OWNERS FROM code WHERE CODE = ?";
-        String updateQuery = "UPDATE code SET USES = USES - 1, PLAYERS = CONCAT(PLAYERS, ?, ', ') WHERE CODE = ?";
+        String selectQuery = "SELECT USES, CMD, OWNERS FROM code WHERE CODE = ?";
+        String updateQuery = "UPDATE code SET USES = USES - 1 WHERE CODE = ?";
         String deleteQuery = "DELETE FROM code WHERE CODE = ?";
         String updateOwnersQuery = "UPDATE code SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(CONCAT(', ', OWNERS, ', '), CONCAT(', ', ?, ', '), ', ')) WHERE CODE = ?";
 
@@ -148,8 +150,7 @@ public class MySQL extends DatabaseManager {
                 }
             } else {
                 try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
-                    updateStatement.setString(1, player.getName());
-                    updateStatement.setString(2, name);
+                    updateStatement.setString(1, name);
                     updateStatement.executeUpdate();
                 }
 
@@ -179,27 +180,6 @@ public class MySQL extends DatabaseManager {
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
-    }
-
-    @Override
-    public boolean isRedeemed(@NotNull String code, @NotNull OfflinePlayer player) {
-        String selectQuery = "SELECT PLAYERS FROM code WHERE CODE = ?";
-
-        try {
-            try (PreparedStatement selectStatement = getConnection().prepareStatement(selectQuery)) {
-                selectStatement.setString(1, code);
-
-                ResultSet resultSet = selectStatement.executeQuery();
-                if (resultSet.next()) {
-                    String playersList = resultSet.getString("PLAYERS");
-                    if (playersList != null && playersList.contains(Objects.requireNonNull(player.getName()))) return true;
-                }
-            }
-        } catch (SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-
-        return false;
     }
 
     @Override
@@ -319,7 +299,7 @@ public class MySQL extends DatabaseManager {
                 codes.add(new Code(name, command, uses));
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
 
         return codes;
@@ -337,7 +317,4 @@ public class MySQL extends DatabaseManager {
         }
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
 }

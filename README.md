@@ -6,7 +6,7 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 
 # Last commit 💯
 
-- I added a menu where the players can see their own codes and redeem them avoiding the dupe glitches.
+- I removed the PLAYERS from the database because it was unnecessary
 
 # Server Status ✅
 
