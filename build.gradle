@@ -1,14 +1,11 @@
 plugins {
     id 'java'
+    id 'io.freefair.lombok' version "8.6"
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id("io.freefair.lombok") version "8.6"
 }
 
 group = 'net.coma'
 version = '1.0'
-
-sourceCompatibility = 17
-targetCompatibility = 17
 
 repositories {
     mavenCentral()
@@ -20,14 +17,18 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT"
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.32'
-    implementation files('libs/HikariCP-5.1.0.jar')
-    implementation files('libs/slf4j-api-1.7.36.jar')
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'com.github.Revxrsal.Lamp:common:3.2.1'
+    implementation 'com.github.Revxrsal.Lamp:bukkit:3.2.1'
 }
 
 tasks {
@@ -35,4 +36,12 @@ tasks {
         options.encoding = 'UTF-8'
         options.release.set(17)
     }
+}
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
+}
+
+shadowJar {
+    minimize()
 }

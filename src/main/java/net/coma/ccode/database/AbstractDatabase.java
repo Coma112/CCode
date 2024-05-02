@@ -3,17 +3,18 @@ package net.coma.ccode.database;
 import net.coma.ccode.managers.Code;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public abstract class DatabaseManager {
+public abstract class AbstractDatabase {
     public abstract boolean isConnected();
 
     public abstract void disconnect();
 
     public abstract void createCode(@NotNull String name, @NotNull String cmd, int uses);
+
+    public abstract void createInfinityCode(@NotNull String name, @NotNull String cmd, int uses);
 
     public abstract boolean exists(@NotNull String name);
 

@@ -1,5 +1,6 @@
 package net.coma.ccode.menu;
 
+import net.coma.ccode.enums.ConfigKeys;
 import net.coma.ccode.processor.MessageProcessor;
 import net.coma.ccode.utils.MenuUtils;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public abstract class Menu implements InventoryHolder {
 
     public abstract int getSlots();
 
-    public abstract void handleMenu(InventoryClickEvent e);
+    public abstract void handleMenu(InventoryClickEvent event);
 
     public abstract void setMenuItems();
 
@@ -33,7 +34,7 @@ public abstract class Menu implements InventoryHolder {
 
         menuUtils.getOwner().openInventory(inventory);
         MenuUpdater menuUpdater = new MenuUpdater(this);
-        menuUpdater.start(20);
+        menuUpdater.start(ConfigKeys.MENU_TICK.getInt() * 20);
     }
 
     @Override

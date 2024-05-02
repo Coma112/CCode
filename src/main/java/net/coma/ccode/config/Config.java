@@ -23,6 +23,7 @@ public class Config extends ConfigUtils {
         yml.addDefault("database.mysql.poolsize", 10);
         yml.addDefault("database.mysql.lifetime", 1800000);
 
+        yml.addDefault("code-item.amount", 1);
         yml.addDefault("code-item.material", "PAPER");
         yml.addDefault("code-item.name", "&b{name}");
         yml.addDefault("code-item.lore", List.of(
@@ -30,6 +31,19 @@ public class Config extends ConfigUtils {
                 "&aClick if you want to redeem the code!"
         ));
 
+        yml.addDefault("menu.title", "&bAVAILABLE CODES");
+        yml.addDefault("menu.size", 54);
+        yml.addDefault("menu.update-tick", 2);
+
+        yml.addDefault("menu.back-item.amount", 1);
+        yml.addDefault("menu.back-item.material", "RED_STAINED_GLASS");
+        yml.addDefault("menu.back-item.name", "&cBack");
+        yml.addDefault("menu.back-item.slot", 45);
+
+        yml.addDefault("menu.forward-item.amount", 1);
+        yml.addDefault("menu.forward-item.material", "GREEN_STAINED_GLASS");
+        yml.addDefault("menu.forward-item.name", "&aForward");
+        yml.addDefault("menu.forward-item.slot", 53);
 
         yml.options().copyDefaults(true);
         save();

@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Getter
-public class MySQL extends DatabaseManager {
+public class MySQL extends AbstractDatabase {
     private final Connection connection;
 
     public MySQL(@NotNull ConfigurationSection section) throws SQLException {
@@ -104,12 +104,30 @@ public class MySQL extends DatabaseManager {
     }
 
     @Override
+    public void createInfinityCode(@NotNull String name, @NotNull String cmd, int uses) {
+        String query = "INSERT IGNORE INTO code (CODE, CMD, USES) VALUES (?, ?, ?)";
+
+        try {
+            if (!exists(name)) {
+                try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                    preparedStatement.setString(1, name);
+                    preparedStatement.setString(2, cmd);
+                    preparedStatement.setInt(3, Integer.MAX_VALUE);
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
     public boolean exists(@NotNull String name) {
         String query = "SELECT * FROM code WHERE CODE = ?";
 
         try {
             if (!getConnection().isValid(2))
-                reconnect(Objects.requireNonNull(CCode.getInstance().getConfigFile().getSection("database")));
+                reconnect(Objects.requireNonNull(CCode.getInstance().getConfiguration().getSection("database")));
 
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
                 preparedStatement.setString(1, name);
@@ -311,7 +329,7 @@ public class MySQL extends DatabaseManager {
     public void reconnect(@NotNull ConfigurationSection section) {
         try {
             if (getConnection() != null && !getConnection().isClosed()) getConnection().close();
-            new MySQL(Objects.requireNonNull(CCode.getInstance().getConfigFile().getSection("database.mysql")));
+            new MySQL(Objects.requireNonNull(CCode.getInstance().getConfiguration().getSection("database.mysql")));
         } catch (SQLException exception) {
             throw new RuntimeException("Failed to reconnect to the database", exception);
         }

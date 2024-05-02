@@ -12,32 +12,26 @@ public class Language extends ConfigUtils {
 
         YamlConfiguration yml = getYml();
 
-        yml.addDefault("prefix", "&b&lCODE &8| ");
-        yml.addDefault("messages.no-permission", "&cYou do not have permission to do this!");
-        yml.addDefault("messages.reload", "&aI have successfully reloaded the files!");
-        yml.addDefault("messages.player-required", "&cPlayer is required!");
-        yml.addDefault("messages.create-right-usage", "&cUsage: /codecreate [name] [uses] [cmd]");
-        yml.addDefault("messages.edit-right-usage", "&cUsage: /codeedit [name] name|uses|cmd [new cmd|uses|name]");
-        yml.addDefault("messages.give-right-usage", "&cUsage: /codegive [name] [player]");
-        yml.addDefault("messages.already-created", "&cThis code is already exists!");
-        yml.addDefault("messages.usage-redeem", "&cUsage: /redeem [name]");
-        yml.addDefault("messages.usage-delete", "&cUsage: /deletecode [name]");
-        yml.addDefault("messages.redeemed", "&aYou have successfully redeemed this code!");
-        yml.addDefault("messages.deleted", "&aYou have successfully deleted this code!");
-        yml.addDefault("messages.need-number", "&cYou need to type in a number!");
-        yml.addDefault("messages.uses-zero", "&cYou can't redeem this code anymore!");
-        yml.addDefault("messages.cant-be-negative", "&cThe number can't be negative!");
-        yml.addDefault("messages.created", "&aYou have successfully created a new code!");
-        yml.addDefault("messages.not-exists", "&cThere is no such a code in the database!");
-        yml.addDefault("messages.edit-cmd", "&aYou have successfully changed the command of the code!");
-        yml.addDefault("messages.edit-uses", "&aYou have successfully changed the uses of the code!");
-        yml.addDefault("messages.edit-name", "&aYou have successfully changed the name of the code!");
-        yml.addDefault("messages.not-an-owner", "&cYou are not an owner of this code!");
-        yml.addDefault("messages.already-owner", "&cThe player is already an owner!");
-        yml.addDefault("messages.successful-give", "&aYou have successfully gave the player permission to the code!");
-        yml.addDefault("messages.first-page", "&cYou are already on the first page!");
-        yml.addDefault("messages.last-page", "&cYou are already on the last page!");
-
+        yml.addDefault("messages.no-permission", "&b&lCODE &8| &cYou do not have permission to do this!");
+        yml.addDefault("messages.reload", "&b&lCODE &8| &aI have successfully reloaded the files!");
+        yml.addDefault("messages.player-required", "&b&lCODE &8| &cPlayer is required!");
+        yml.addDefault("messages.already-created", "&b&lCODE &8| &cThis code is already exists!");
+        yml.addDefault("messages.redeemed", "&b&lCODE &8| &aYou have successfully redeemed this code!");
+        yml.addDefault("messages.deleted", "&b&lCODE &8| &aYou have successfully deleted this code!");
+        yml.addDefault("messages.need-number", "&b&lCODE &8| &cYou need to type in a number!");
+        yml.addDefault("messages.uses-zero", "&b&lCODE &8| &cYou can't redeem this code anymore!");
+        yml.addDefault("messages.cant-be-negative", "&b&lCODE &8| &cThe number can't be negative!");
+        yml.addDefault("messages.created", "&b&lCODE &8| &aYou have successfully created a new code!");
+        yml.addDefault("messages.not-exists", "&b&lCODE &8| &cThere is no such a code in the database!");
+        yml.addDefault("messages.edit-cmd", "&b&lCODE &8| &aYou have successfully changed the command of the code!");
+        yml.addDefault("messages.edit-uses", "&b&lCODE &8| &aYou have successfully changed the uses of the code!");
+        yml.addDefault("messages.edit-name", "&b&lCODE &8| &aYou have successfully changed the name of the code!");
+        yml.addDefault("messages.not-an-owner", "&b&lCODE &8| &cYou are not an owner of this code!");
+        yml.addDefault("messages.already-owner", "&b&lCODE &8| &cThe player is already an owner!");
+        yml.addDefault("messages.successful-add", "&b&lCODE &8| &aYou have successfully gave the player permission to the code!");
+        yml.addDefault("messages.first-page", "&b&lCODE &8| &cYou are already on the first page!");
+        yml.addDefault("messages.last-page", "&b&lCODE &8| &cYou are already on the last page!");
+        yml.addDefault("messages.offline-player", "&b&lCODE &8| &cThe target is offline!");
 
         yml.options().copyDefaults(true);
         save();

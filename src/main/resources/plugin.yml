@@ -1,4 +1,7 @@
 name: CCode
-version: '${version}'
+version: '1.0'
 main: net.coma.ccode.CCode
 api-version: 1.20
+folia-supported: true
+softdepend:
+  - PlaceholderAPI

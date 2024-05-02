@@ -1,72 +1,48 @@
 package net.coma.ccode.menu.menus;
 
 import net.coma.ccode.CCode;
-import net.coma.ccode.config.ConfigKeys;
+import net.coma.ccode.enums.ConfigKeys;
+import net.coma.ccode.enums.MessageKeys;
 import net.coma.ccode.item.IItemBuilder;
-import net.coma.ccode.item.ItemBuilder;
-import net.coma.ccode.language.MessageKeys;
 import net.coma.ccode.managers.Code;
 import net.coma.ccode.menu.PaginatedMenu;
-import net.coma.ccode.storage.ItemStorage;
 import net.coma.ccode.utils.MenuUtils;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
+@SuppressWarnings("deprecation")
 public class CodeMenu extends PaginatedMenu {
     public CodeMenu(MenuUtils menuUtils) {
         super(menuUtils);
     }
 
+    private static ItemStack createCodeItem(@NotNull Code code) {
+        ItemStack itemStack = IItemBuilder.createItemFromSection("code-item");
+        ItemMeta meta = itemStack.getItemMeta();
+
+        if (meta != null) {
+            String displayName = meta.getDisplayName()
+                    .replace("{name}", code.codeName());
+            meta.setDisplayName(displayName);
+        }
+
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
+
     @Override
     public String getMenuName() {
-        return "&bAVAILABLE CODES";
+        return ConfigKeys.MENU_TITLE.getString();
     }
 
     @Override
     public int getSlots() {
-        return 54;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void handleMenu(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        List<Code> codes = CCode.getDatabaseManager().getCodes(player);
-
-        if (Objects.equals(event.getCurrentItem(), ItemStorage.BACK)) {
-            if (page == 0) {
-                player.sendMessage(MessageKeys.FIRST_PAGE);
-            } else {
-                page--;
-                super.open();
-            }
-
-            return;
-        }
-
-        if (Objects.equals(event.getCurrentItem(), ItemStorage.FORWARD)) {
-            int nextPageIndex = page + 1;
-            int totalPages = (int) Math.ceil((double) codes.size() / getMaxItemsPerPage());
-
-            if (nextPageIndex >= totalPages) {
-                player.sendMessage(MessageKeys.LAST_PAGE);
-            } else {
-                page++;
-                super.open();
-            }
-
-            return;
-        }
-
-        CCode.getDatabaseManager().redeemCode(Objects.requireNonNull(event.getCurrentItem()).getItemMeta().getLocalizedName(), player);
-        inventory.close();
-        player.sendMessage(MessageKeys.REDEEMED);
+        return ConfigKeys.MENU_SIZE.getInt();
     }
 
 
@@ -86,16 +62,42 @@ public class CodeMenu extends PaginatedMenu {
         }
     }
 
+    @Override
+    public void handleMenu(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (!event.getInventory().equals(inventory)) return;
 
-    private static ItemStack createCodeItem(@NotNull Code code) {
-        ItemBuilder itemBuilder = IItemBuilder.create(Material.valueOf(ConfigKeys.CODE_ITEM_MATERIAL))
-                .setName(ConfigKeys.CODE_ITEM_NAME
-                        .replace("{name}", code.codeName()))
-                .setLocalizedName(code.codeName());
+        event.setCancelled(true);
 
-        for (String lore : ConfigKeys.CODE_ITEM_LORE) itemBuilder.addLore(lore);
+        List<Code> codes = CCode.getDatabaseManager().getCodes(player);
 
-        return itemBuilder.finish();
+        switch (event.getSlot()) {
+            case 45 -> {
+                if (page == 0) {
+                    player.sendMessage(MessageKeys.FIRST_PAGE.getMessage());
+                    return;
+                } else {
+                    page--;
+                    super.open();
+                }
+            }
+
+            case 53 -> {
+                int nextPageIndex = page + 1;
+                int totalPages = (int) Math.ceil((double) codes.size() / getMaxItemsPerPage());
+
+                if (nextPageIndex >= totalPages) {
+                    player.sendMessage(MessageKeys.LAST_PAGE.getMessage());
+                    return;
+                } else {
+                    page++;
+                    super.open();
+                }
+            }
+        }
+
+        CCode.getDatabaseManager().redeemCode(codes.get(event.getSlot()).codeName(), player);
+        inventory.close();
+        player.sendMessage(MessageKeys.REDEEMED.getMessage());
     }
-
 }

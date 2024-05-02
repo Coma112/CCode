@@ -1,6 +1,6 @@
 package net.coma.ccode.utils;
 
-import net.coma.ccode.interfaces.IConfig;
+import lombok.Getter;
 import net.coma.ccode.processor.MessageProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,9 +12,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ConfigUtils implements IConfig {
+public class ConfigUtils {
+    @Getter
     private YamlConfiguration yml;
     private File config;
+    @Getter
     private String name;
 
     public ConfigUtils(@NotNull String dir, @NotNull String name) {
@@ -30,7 +32,7 @@ public class ConfigUtils implements IConfig {
             try {
                 if (!config.createNewFile()) return;
             } catch (IOException exception) {
-                exception.printStackTrace();
+                throw new RuntimeException(exception);
             }
         }
 
@@ -39,24 +41,16 @@ public class ConfigUtils implements IConfig {
         this.name = name;
     }
 
-    @Override
     public void reload() {
         yml = YamlConfiguration.loadConfiguration(config);
         save();
     }
 
-    @Override
     public void set(@NotNull String path, Object value) {
         yml.set(path, value);
         save();
     }
 
-    @Override
-    public YamlConfiguration getYml() {
-        return yml;
-    }
-
-    @Override
     public void save() {
         try {
             yml.save(config);
@@ -65,7 +59,6 @@ public class ConfigUtils implements IConfig {
         }
     }
 
-    @Override
     public List<String> getList(@NotNull String path) {
         return yml.getStringList(path)
                 .stream()
@@ -74,39 +67,28 @@ public class ConfigUtils implements IConfig {
 
     }
 
-    @Override
     public List<String> getLoreList(@NotNull String path) {
         return getList(path).stream()
                 .map(MessageProcessor::process)
                 .collect(Collectors.toList());
     }
 
-    @Override
     public boolean getBoolean(@NotNull String path) {
         return yml.getBoolean(path);
     }
 
-    @Override
     public int getInt(@NotNull String path) {
         return yml.getInt(path);
     }
 
-    @Override
     public String getString(@NotNull String path) {
         return yml.getString(path);
     }
 
-    @Override
     public @Nullable ConfigurationSection getSection(@NotNull String path) {
         return yml.getConfigurationSection(path);
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
     public void setName(@NotNull String name) {
         this.name = name;
     }
