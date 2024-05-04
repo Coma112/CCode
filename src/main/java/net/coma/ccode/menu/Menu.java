@@ -37,9 +37,22 @@ public abstract class Menu implements InventoryHolder {
         menuUpdater.start(ConfigKeys.MENU_TICK.getInt() * 20);
     }
 
+    public void updateMenuItems() {
+        if (inventory != null) {
+            setMenuItems();
+            menuUtils.getOwner().updateInventory();
+        }
+    }
+
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
+    }
+
+    public void close() {
+        MenuUpdater menuUpdater = new MenuUpdater(this);
+        menuUpdater.stop();
+        inventory = null;
     }
 }
 

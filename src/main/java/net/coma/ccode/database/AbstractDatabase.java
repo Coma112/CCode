@@ -26,6 +26,8 @@ public abstract class AbstractDatabase {
 
     public abstract boolean isUsesZero(@NotNull String code);
 
+    public abstract void takeCode(@NotNull String code, @NotNull String oldOwner, @NotNull String newOwner);
+
     public abstract void deleteCode(@NotNull String code);
 
     public abstract void changeName(@NotNull String oldName, @NotNull String newName);

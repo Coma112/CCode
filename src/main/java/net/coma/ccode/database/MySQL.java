@@ -15,9 +15,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Getter
 public class MySQL extends AbstractDatabase {
@@ -243,6 +245,39 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
+    public void takeCode(@NotNull String code, @NotNull String oldOwner, @NotNull String newOwner) {
+        String query = "SELECT OWNERS FROM code WHERE CODE = ?";
+        String updateQuery = "UPDATE code SET OWNERS = ? WHERE CODE = ?";
+
+        try (PreparedStatement selectStatement = getConnection().prepareStatement(query)) {
+            selectStatement.setString(1, code);
+            ResultSet resultSet = selectStatement.executeQuery();
+            if (resultSet.next()) {
+                String owners = resultSet.getString("OWNERS");
+                List<String> ownerList = Arrays
+                        .stream(owners.split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+
+                int index = ownerList.indexOf(oldOwner);
+
+                if (index != -1) {
+                    ownerList.set(index, newOwner);
+                    String updatedOwners = String.join(", ", ownerList);
+
+                    try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
+                        updateStatement.setString(1, updatedOwners);
+                        updateStatement.setString(2, code);
+                        updateStatement.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
     public void deleteCode(@NotNull String code) {
         String deleteQuery = "DELETE FROM code WHERE CODE = ?";
 
@@ -334,5 +369,4 @@ public class MySQL extends AbstractDatabase {
             throw new RuntimeException("Failed to reconnect to the database", exception);
         }
     }
-
 }

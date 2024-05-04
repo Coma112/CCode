@@ -2,6 +2,7 @@ package net.coma.ccode.utils;
 
 import net.coma.ccode.CCode;
 import net.coma.ccode.menu.MenuListener;
+import net.coma.ccode.menu.menus.CodeMenu;
 import org.bukkit.event.Listener;
 
 import java.util.HashSet;
@@ -24,7 +25,7 @@ public class ListenerRegister {
     private static Set<Class<? extends Listener>> getListenerClasses() {
         Set<Class<? extends Listener>> listenerClasses = new HashSet<>();
         listenerClasses.add(MenuListener.class);
+        listenerClasses.add(CodeMenu.class);
         return listenerClasses;
     }
-
 }

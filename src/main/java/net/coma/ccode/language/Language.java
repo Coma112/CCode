@@ -32,6 +32,8 @@ public class Language extends ConfigUtils {
         yml.addDefault("messages.first-page", "&b&lCODE &8| &cYou are already on the first page!");
         yml.addDefault("messages.last-page", "&b&lCODE &8| &cYou are already on the last page!");
         yml.addDefault("messages.offline-player", "&b&lCODE &8| &cThe target is offline!");
+        yml.addDefault("messages.successful-give-target", "&b&lCODE &8| &2{player} &agave you the code, &2{code}&a!");
+        yml.addDefault("messages.successful-give-player", "&b&lCODE &8| &aYou have successfully transferred the code!");
 
         yml.options().copyDefaults(true);
         save();

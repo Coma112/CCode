@@ -24,6 +24,8 @@ public enum MessageKeys {
     ALREADY_AN_OWNER("messages.already-owner"),
     SUCCESSFUL_ADD("messages.successful-add"),
     FIRST_PAGE("messages.first-page"),
+    TARGET_GIVE("messages.successful-give-target"),
+    PLAYER_GIVE("messages.successful-give-player"),
     LAST_PAGE("messages.last-page");
 
     private final String path;

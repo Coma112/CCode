@@ -135,7 +135,7 @@ public class CommandCode {
     public void add(CommandSender sender, @NotNull String name, @NotNull String target) {
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(target);
 
-        if (!sender.hasPermission("ccode.give")) {
+        if (!sender.hasPermission("ccode.add")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -150,7 +150,7 @@ public class CommandCode {
     }
 
     @Subcommand("redeem")
-    public void redeem(Player player, @NotNull String name) {
+    public void redeem(@NotNull Player player, @NotNull String name) {
         if (!CCode.getDatabaseManager().exists(name)) {
             player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
@@ -168,5 +168,37 @@ public class CommandCode {
 
         CCode.getDatabaseManager().redeemCode(name, player);
         player.sendMessage(MessageKeys.REDEEMED.getMessage());
+    }
+
+    @Subcommand("give")
+    public void give(@NotNull Player player, @NotNull String name, @NotNull String target) {
+        Player targetPlayer = Bukkit.getPlayer(target);
+
+        if (!player.hasPermission("ccode.give")) {
+            player.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
+            return;
+        }
+
+        if (!CCode.getDatabaseManager().exists(name)) {
+            player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
+
+        if (!CCode.getDatabaseManager().isOwned(name, player)) {
+            player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
+            return;
+        }
+
+        if (!Objects.requireNonNull(targetPlayer).isOnline()) {
+            player.sendMessage(MessageKeys.OFFLINE_PLAYER.getMessage());
+            return;
+        }
+
+        CCode.getDatabaseManager().takeCode(name, player.getName(), targetPlayer.getName());
+        player.sendMessage(MessageKeys.PLAYER_GIVE.getMessage());
+        targetPlayer.sendMessage(MessageKeys.TARGET_GIVE
+                .getMessage()
+                .replace("{player}", player.getName())
+                .replace("{code}", name));
     }
 }

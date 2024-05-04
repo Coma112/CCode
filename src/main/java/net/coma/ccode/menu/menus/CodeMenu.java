@@ -8,7 +8,10 @@ import net.coma.ccode.managers.Code;
 import net.coma.ccode.menu.PaginatedMenu;
 import net.coma.ccode.utils.MenuUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -16,9 +19,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CodeMenu extends PaginatedMenu {
+public class CodeMenu extends PaginatedMenu implements Listener {
     public CodeMenu(MenuUtils menuUtils) {
         super(menuUtils);
+    }
+
+    public CodeMenu() {
+        super(null);
     }
 
     private static ItemStack createCodeItem(@NotNull Code code) {
@@ -65,39 +72,42 @@ public class CodeMenu extends PaginatedMenu {
     @Override
     public void handleMenu(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (inventory == null) return;
         if (!event.getInventory().equals(inventory)) return;
-
         event.setCancelled(true);
 
         List<Code> codes = CCode.getDatabaseManager().getCodes(player);
 
-        switch (event.getSlot()) {
-            case 45 -> {
-                if (page == 0) {
-                    player.sendMessage(MessageKeys.FIRST_PAGE.getMessage());
-                    return;
-                } else {
-                    page--;
-                    super.open();
-                }
+        if (event.getSlot() == ConfigKeys.FORWARD_SLOT.getInt()) {
+            int nextPageIndex = page + 1;
+            int totalPages = (int) Math.ceil((double) codes.size() / getMaxItemsPerPage());
+
+            if (nextPageIndex >= totalPages) {
+                player.sendMessage(MessageKeys.LAST_PAGE.getMessage());
+                return;
+            } else {
+                page++;
+                super.open();
             }
+        }
 
-            case 53 -> {
-                int nextPageIndex = page + 1;
-                int totalPages = (int) Math.ceil((double) codes.size() / getMaxItemsPerPage());
-
-                if (nextPageIndex >= totalPages) {
-                    player.sendMessage(MessageKeys.LAST_PAGE.getMessage());
-                    return;
-                } else {
-                    page++;
-                    super.open();
-                }
+        if (event.getSlot() == ConfigKeys.BACK_SLOT.getInt()) {
+            if (page == 0) {
+                player.sendMessage(MessageKeys.FIRST_PAGE.getMessage());
+                return;
+            } else {
+                page--;
+                super.open();
             }
         }
 
         CCode.getDatabaseManager().redeemCode(codes.get(event.getSlot()).codeName(), player);
         inventory.close();
         player.sendMessage(MessageKeys.REDEEMED.getMessage());
+    }
+
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+        if (event.getInventory().equals(inventory)) close();
     }
 }
