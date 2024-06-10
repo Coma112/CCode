@@ -25,6 +25,7 @@ public class MessageProcessor {
             message = message.replace(hexCode, builder.toString());
             matcher = pattern.matcher(message);
         }
+
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

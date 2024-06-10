@@ -4,13 +4,19 @@ import lombok.Getter;
 import net.coma.ccode.config.Config;
 import net.coma.ccode.database.AbstractDatabase;
 import net.coma.ccode.database.MySQL;
+import net.coma.ccode.enums.LanguageType;
+import net.coma.ccode.enums.keys.ConfigKeys;
 import net.coma.ccode.language.Language;
 import net.coma.ccode.utils.CommandRegister;
 import net.coma.ccode.utils.ListenerRegister;
+import net.coma.ccode.utils.StartingUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.Objects;
+
+import static net.coma.ccode.utils.StartingUtils.registerListenersAndCommands;
 
 public final class CCode extends JavaPlugin {
     @Getter
@@ -21,15 +27,20 @@ public final class CCode extends JavaPlugin {
     private static Language language;
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         instance = this;
+
+        StartingUtils.checkVersion();
+    }
+
+    @Override
+    public void onEnable() {
+        StartingUtils.checkVM();
+        saveDefaultConfig();
 
         initializeComponents();
         registerListenersAndCommands();
         initializeDatabaseManager();
-
-        MySQL mysql = (MySQL) databaseManager;
-        mysql.createTable();
     }
 
     @Override
@@ -47,13 +58,13 @@ public final class CCode extends JavaPlugin {
     }
 
     private void initializeComponents() {
-        language = new Language();
         config = new Config();
-    }
 
-    private void registerListenersAndCommands() {
-        ListenerRegister.registerEvents();
-        CommandRegister.registerCommands();
+        saveResource("locales/messages_en.yml", false);
+        saveResource("locales/messages_hu.yml", false);
+        saveResource("locales/messages_de.yml", false);
+
+        language = new Language("messages_" + LanguageType.valueOf(ConfigKeys.LANGUAGE.getString()));
     }
 
     private void initializeDatabaseManager() {

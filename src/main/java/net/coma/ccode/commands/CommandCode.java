@@ -1,7 +1,9 @@
 package net.coma.ccode.commands;
 
 import net.coma.ccode.CCode;
-import net.coma.ccode.enums.MessageKeys;
+import net.coma.ccode.enums.keys.MessageKeys;
+import net.coma.ccode.events.CodeCreateEvent;
+import net.coma.ccode.events.CodeDeleteEvent;
 import net.coma.ccode.managers.Code;
 import net.coma.ccode.menu.menus.CodeMenu;
 import net.coma.ccode.utils.MenuUtils;
@@ -15,23 +17,27 @@ import revxrsal.commands.annotation.Subcommand;
 
 import java.util.Objects;
 
-@Command({"code", "ccode", "dvoucher"})
+@Command({"code", "ccode", "voucher"})
 public class CommandCode {
     @Subcommand("reload")
-    public void reload(CommandSender sender) {
-        if (!sender.hasPermission("ccode.reload")) {
+    public void reload(@NotNull CommandSender sender) {
+        if (!sender.hasPermission("ccode.reload") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
 
         CCode.getInstance().getLanguage().reload();
         CCode.getInstance().getConfiguration().reload();
-        CCode.getDatabaseManager().reconnect(Objects.requireNonNull(CCode.getInstance().getConfiguration().getSection("database.mysql")));
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
     @Subcommand("menu")
-    public void menu(CommandSender sender) {
+    public void menu(@NotNull CommandSender sender) {
+        if (!sender.hasPermission("ccode.menu") || !sender.hasPermission("ccode.admin")) {
+            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
+            return;
+        }
+
         if (!(sender instanceof Player player)) {
             sender.sendMessage(MessageKeys.PLAYER_REQUIRED.getMessage());
             return;
@@ -41,8 +47,8 @@ public class CommandCode {
     }
 
     @Subcommand("create")
-    public void create(CommandSender sender, @NotNull String name, int uses, @NotNull String command) {
-        if (!sender.hasPermission("ccode.create")) {
+    public void create(@NotNull CommandSender sender, @NotNull String name, int uses, @NotNull String command) {
+        if (!sender.hasPermission("ccode.create") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -60,11 +66,12 @@ public class CommandCode {
         Code code = new Code(name, (command + " ").trim(), uses);
         CCode.getDatabaseManager().createCode(code.codeName(), code.command(), code.uses());
         sender.sendMessage(MessageKeys.CREATED.getMessage());
+        CCode.getInstance().getServer().getPluginManager().callEvent(new CodeCreateEvent((Player) sender, name, command, uses));
     }
 
     @Subcommand("delete")
-    public void delete(CommandSender sender, @NotNull String name) {
-        if (!sender.hasPermission("ccode.delete")) {
+    public void delete(@NotNull CommandSender sender, @NotNull String name) {
+        if (!sender.hasPermission("ccode.delete") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -76,11 +83,12 @@ public class CommandCode {
 
         CCode.getDatabaseManager().deleteCode(name);
         sender.sendMessage(MessageKeys.DELETED.getMessage());
+        CCode.getInstance().getServer().getPluginManager().callEvent(new CodeDeleteEvent((Player) sender, name));
     }
 
     @Subcommand("edituse")
-    public void edituse(CommandSender sender, @NotNull String name, int newUse) {
-        if (!sender.hasPermission("ccode.edituse")) {
+    public void edituse(@NotNull CommandSender sender, @NotNull String name, int newUse) {
+        if (!sender.hasPermission("ccode.edituse") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -100,8 +108,8 @@ public class CommandCode {
     }
 
     @Subcommand("editname")
-    public void editname(CommandSender sender, @NotNull String name, String newName) {
-        if (!sender.hasPermission("ccode.editname")) {
+    public void editname(@NotNull CommandSender sender, @NotNull String name, @NotNull String newName) {
+        if (!sender.hasPermission("ccode.editname") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -116,8 +124,8 @@ public class CommandCode {
     }
 
     @Subcommand("editcommand")
-    public void editcommand(CommandSender sender, @NotNull String name, String newCommand) {
-        if (!sender.hasPermission("ccode.editcommand")) {
+    public void editcommand(@NotNull CommandSender sender, @NotNull String name, @NotNull String newCommand) {
+        if (!sender.hasPermission("ccode.editcommand") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -132,10 +140,10 @@ public class CommandCode {
     }
 
     @Subcommand("add")
-    public void add(CommandSender sender, @NotNull String name, @NotNull String target) {
+    public void add(@NotNull CommandSender sender, @NotNull String name, @NotNull String target) {
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(target);
 
-        if (!sender.hasPermission("ccode.add")) {
+        if (!sender.hasPermission("ccode.add") || !sender.hasPermission("ccode.admin")) {
             sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
             return;
         }
@@ -150,7 +158,17 @@ public class CommandCode {
     }
 
     @Subcommand("redeem")
-    public void redeem(@NotNull Player player, @NotNull String name) {
+    public void redeem(@NotNull CommandSender sender, @NotNull String name) {
+        if (!sender.hasPermission("ccode.redeem") || !sender.hasPermission("ccode.admin")) {
+            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
+            return;
+        }
+
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(MessageKeys.PLAYER_REQUIRED.getMessage());
+            return;
+        }
+
         if (!CCode.getDatabaseManager().exists(name)) {
             player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
@@ -171,11 +189,16 @@ public class CommandCode {
     }
 
     @Subcommand("give")
-    public void give(@NotNull Player player, @NotNull String name, @NotNull String target) {
+    public void give(@NotNull CommandSender sender, @NotNull String name, @NotNull String target) {
         Player targetPlayer = Bukkit.getPlayer(target);
 
-        if (!player.hasPermission("ccode.give")) {
-            player.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
+        if (!sender.hasPermission("ccode.give") || !sender.hasPermission("ccode.admin")) {
+            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
+            return;
+        }
+
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(MessageKeys.PLAYER_REQUIRED.getMessage());
             return;
         }
 

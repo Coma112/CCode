@@ -7,8 +7,6 @@ This is a Minecraft plugin coded in spigot with the Paper framework. It replaces
 # Last commit 💯
 
 - It's publish ready.
-- B3rcyy created the take command thx
-- I fixed the menu updated problem
 
 # Server Status ✅
 

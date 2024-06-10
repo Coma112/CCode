@@ -1,0 +1,70 @@
+language: "en" # Supported languages -> hu, de, en
+
+database:
+  type: mysql
+  mysql:
+    host: localhost
+    port: 3306
+    database: coma112
+    username: root
+    password: ""
+    # You shouldn't touch this part except if you are familiar with it.
+    ssl: false
+    certificateverification: false
+    poolsize: 10
+    lifetime: 1800000
+
+# This is the code item in the GUI.
+code-item:
+  amount: 1
+  material: PAPER
+  name: "&b{name}"
+  lore:
+    - ""
+    - "&aClick if you want to redeem the code!"
+
+# Menu Configuration
+menu:
+  title: "&b&lAVAILABLE CODES"
+  size: 54
+  update-tick: 2
+  back-item:
+    amount: 1
+    material: RED_STAINED_GLASS
+    name: "&cBack"
+    slot: 45
+  forward-item:
+    amount: 1
+    material: GREEN_STAINED_GLASS
+    name: "&aForward"
+    slot: 53
+
+# Webhook
+# webhook.enabled -> You can enable and disable the webhook feature
+# webhook.url -> Discord Webhook URL
+
+webhook:
+  enabled: false
+  url: "WEBHOOK URL HERE!!!"
+  code-create-embed:
+    title: "NEW CODE CREATED!"
+    description: "{player} created a new code: {code} (Uses: {uses}, Command: {command})"
+    color: "CYAN"
+    author-name: ""
+    author-url: ""
+    author-icon: ""
+    footer-text: "SENT BY CCODE"
+    footer-icon: ""
+    thumbnail: ""
+    image: ""
+  code-delete-embed:
+    title: "CODE DELETED!"
+    description: "{player} deleted a code: {code}"
+    color: "CYAN"
+    author-name: ""
+    author-url: ""
+    author-icon: ""
+    footer-text: "SENT BY CCODE"
+    footer-icon: ""
+    thumbnail: ""
+    image: ""

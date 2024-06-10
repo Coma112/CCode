@@ -1,7 +1,7 @@
 package net.coma.ccode.menu;
 
 import lombok.Getter;
-import net.coma.ccode.enums.ConfigKeys;
+import net.coma.ccode.enums.keys.ConfigKeys;
 import net.coma.ccode.item.IItemBuilder;
 import net.coma.ccode.utils.MenuUtils;
 

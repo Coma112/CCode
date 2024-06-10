@@ -1,8 +1,8 @@
 package net.coma.ccode.menu.menus;
 
 import net.coma.ccode.CCode;
-import net.coma.ccode.enums.ConfigKeys;
-import net.coma.ccode.enums.MessageKeys;
+import net.coma.ccode.enums.keys.ConfigKeys;
+import net.coma.ccode.enums.keys.MessageKeys;
 import net.coma.ccode.item.IItemBuilder;
 import net.coma.ccode.managers.Code;
 import net.coma.ccode.menu.PaginatedMenu;

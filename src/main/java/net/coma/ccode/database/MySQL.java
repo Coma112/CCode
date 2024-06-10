@@ -4,7 +4,9 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import net.coma.ccode.CCode;
+import net.coma.ccode.events.CodeCreateEvent;
 import net.coma.ccode.managers.Code;
+import net.coma.ccode.utils.CodeLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,7 +73,7 @@ public class MySQL extends AbstractDatabase {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                throw new RuntimeException(exception);
+                CodeLogger.error(exception.getMessage());
             }
         }
     }
@@ -82,7 +84,7 @@ public class MySQL extends AbstractDatabase {
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.execute();
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -101,25 +103,7 @@ public class MySQL extends AbstractDatabase {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    @Override
-    public void createInfinityCode(@NotNull String name, @NotNull String cmd, int uses) {
-        String query = "INSERT IGNORE INTO code (CODE, CMD, USES) VALUES (?, ?, ?)";
-
-        try {
-            if (!exists(name)) {
-                try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                    preparedStatement.setString(1, name);
-                    preparedStatement.setString(2, cmd);
-                    preparedStatement.setInt(3, Integer.MAX_VALUE);
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -183,7 +167,7 @@ public class MySQL extends AbstractDatabase {
                 if (!command.isEmpty()) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", Objects.requireNonNull(player.getName())));
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -198,7 +182,7 @@ public class MySQL extends AbstractDatabase {
                 updateOwnersStatement.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -217,7 +201,7 @@ public class MySQL extends AbstractDatabase {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
 
         return false;
@@ -238,7 +222,7 @@ public class MySQL extends AbstractDatabase {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
 
         return false;
@@ -273,7 +257,7 @@ public class MySQL extends AbstractDatabase {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -287,7 +271,7 @@ public class MySQL extends AbstractDatabase {
                 deleteStatement.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -302,7 +286,7 @@ public class MySQL extends AbstractDatabase {
                 updateStatement.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -317,7 +301,7 @@ public class MySQL extends AbstractDatabase {
                 updateStatement.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -332,7 +316,7 @@ public class MySQL extends AbstractDatabase {
                 updateStatement.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 
@@ -352,7 +336,7 @@ public class MySQL extends AbstractDatabase {
                 codes.add(new Code(name, command, uses));
             }
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            CodeLogger.error(exception.getMessage());
         }
 
         return codes;
@@ -366,7 +350,7 @@ public class MySQL extends AbstractDatabase {
             if (getConnection() != null && !getConnection().isClosed()) getConnection().close();
             new MySQL(Objects.requireNonNull(CCode.getInstance().getConfiguration().getSection("database.mysql")));
         } catch (SQLException exception) {
-            throw new RuntimeException("Failed to reconnect to the database", exception);
+            CodeLogger.error(exception.getMessage());
         }
     }
 }

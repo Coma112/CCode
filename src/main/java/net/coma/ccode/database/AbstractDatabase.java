@@ -14,8 +14,6 @@ public abstract class AbstractDatabase {
 
     public abstract void createCode(@NotNull String name, @NotNull String cmd, int uses);
 
-    public abstract void createInfinityCode(@NotNull String name, @NotNull String cmd, int uses);
-
     public abstract boolean exists(@NotNull String name);
 
     public abstract void redeemCode(@NotNull String name, @NotNull OfflinePlayer player);

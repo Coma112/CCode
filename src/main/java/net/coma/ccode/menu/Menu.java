@@ -1,6 +1,6 @@
 package net.coma.ccode.menu;
 
-import net.coma.ccode.enums.ConfigKeys;
+import net.coma.ccode.enums.keys.ConfigKeys;
 import net.coma.ccode.processor.MessageProcessor;
 import net.coma.ccode.utils.MenuUtils;
 import org.bukkit.Bukkit;

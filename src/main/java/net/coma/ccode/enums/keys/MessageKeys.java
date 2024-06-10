@@ -1,9 +1,11 @@
-package net.coma.ccode.enums;
+package net.coma.ccode.enums.keys;
 
+import lombok.Getter;
 import net.coma.ccode.CCode;
 import net.coma.ccode.processor.MessageProcessor;
 import org.jetbrains.annotations.NotNull;
 
+@Getter
 public enum MessageKeys {
     NO_PERMISSION("messages.no-permission"),
     RELOAD("messages.reload"),
@@ -32,10 +34,6 @@ public enum MessageKeys {
 
     MessageKeys(@NotNull final String path) {
         this.path = path;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public String getMessage() {
