@@ -61,12 +61,6 @@ public class ItemBuilder implements IItemBuilder {
     }
 
     @Override
-    public ItemBuilder setLocalizedName(@NotNull String name) {
-        meta.setLocalizedName(name);
-        return this;
-    }
-
-    @Override
     public ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int level) {
         meta.addEnchant(enchantment, level, true);
         return this;
@@ -102,7 +96,6 @@ public class ItemBuilder implements IItemBuilder {
         lores = lores == null ? new ArrayList<>() : lores;
 
         lores.remove(Math.min(line, lores.size()));
-
         meta.setLore(lores);
 
         return this;

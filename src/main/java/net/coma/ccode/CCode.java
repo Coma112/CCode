@@ -12,12 +12,9 @@ import net.coma.ccode.enums.LanguageType;
 import net.coma.ccode.enums.keys.ConfigKeys;
 import net.coma.ccode.language.Language;
 import net.coma.ccode.utils.CodeLogger;
-import net.coma.ccode.utils.CommandRegister;
-import net.coma.ccode.utils.ListenerRegister;
 import net.coma.ccode.utils.StartingUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.Objects;
 

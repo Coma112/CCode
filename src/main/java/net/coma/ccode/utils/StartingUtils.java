@@ -16,8 +16,8 @@ public class StartingUtils {
     private static boolean isSupported;
 
     public static void registerListenersAndCommands() {
-        ListenerRegister.registerEvents();
-        CommandRegister.registerCommands();
+        RegisterUtils.registerEvents();
+        RegisterUtils.registerCommands();
     }
 
 
@@ -28,7 +28,7 @@ public class StartingUtils {
         }
 
         if (!isSupported) {
-            CodeLogger.error("This version of CBounty is not supported on this server version.");
+            CodeLogger.error("This version of CCode is not supported on this server version.");
             CodeLogger.error("Please consider updating your server version to a newer version.");
             CCode.getInstance().getServer().getPluginManager().disablePlugin(CCode.getInstance());
         }
@@ -38,6 +38,7 @@ public class StartingUtils {
         VersionSupport support;
 
         try {
+            // Check for Spigot-specific class
             Class.forName("org.spigotmc.SpigotConfig");
         } catch (Exception ignored) {
             isSupported = false;
@@ -45,7 +46,25 @@ public class StartingUtils {
         }
 
         try {
-            int midVersion = Integer.parseInt((Bukkit.getServer().getClass().getName().split("\\.")[3]).split("_")[1]);
+            // Debugging output
+            CodeLogger.info("Server class name: " + Bukkit.getServer().getClass().getName());
+
+            String[] classParts = Bukkit.getServer().getClass().getName().split("\\.");
+            if (classParts.length < 4) {
+                CodeLogger.error("Unexpected server class name format: " + Bukkit.getServer().getClass().getName());
+                isSupported = false;
+                return;
+            }
+
+            String[] versionParts = classParts[3].split("_");
+            if (versionParts.length < 2) {
+                CodeLogger.error("Unexpected version format in class name: " + classParts[3]);
+                isSupported = false;
+                return;
+            }
+
+            int midVersion = Integer.parseInt(versionParts[1]);
+            CodeLogger.info("Parsed version: " + midVersion);
 
             if (midVersion <= 12) {
                 isSupported = false;
@@ -63,6 +82,8 @@ public class StartingUtils {
         ServerVersionSupport nms = support.getVersionSupport();
         isSupported = true;
     }
+
+
 
     public static void checkUpdates() {
         new UpdateChecker(116501).getVersion(version -> {

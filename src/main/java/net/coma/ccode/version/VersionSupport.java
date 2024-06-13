@@ -15,7 +15,7 @@ public class VersionSupport {
         if (version == MinecraftVersion.UNKNOWN) throw new IllegalArgumentException("VERSION NOT FOUND!!! ");
 
 
-        Class<?> clazz = Class.forName("net.coma112.ccode.version.nms." + version.name() + ".Version");
+        Class<?> clazz = Class.forName("net.coma.ccode.version.nms." + version.name() + ".Version");
         versionSupport = (ServerVersionSupport) clazz.getConstructor(Plugin.class).newInstance(plugin);
 
         if (!versionSupport.isSupported()) {
