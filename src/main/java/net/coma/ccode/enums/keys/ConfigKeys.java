@@ -5,6 +5,7 @@ import net.coma.ccode.processor.MessageProcessor;
 import org.jetbrains.annotations.NotNull;
 
 public enum ConfigKeys {
+    DATABASE("database.type"),
     MENU_SIZE("menu.size"),
     BACK_SLOT("menu.back-item.slot"),
     FORWARD_SLOT("menu.forward-item.slot"),

@@ -1,6 +1,7 @@
 package net.coma.ccode.utils;
 
 import net.coma.ccode.CCode;
+import net.coma.ccode.update.UpdateChecker;
 import net.coma.ccode.version.MinecraftVersion;
 import net.coma.ccode.version.ServerVersionSupport;
 import net.coma.ccode.version.VersionSupport;
@@ -10,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public class StartingUtils {
     private static boolean isSupported;
 
@@ -61,6 +63,13 @@ public class StartingUtils {
         ServerVersionSupport nms = support.getVersionSupport();
         isSupported = true;
     }
+
+    public static void checkUpdates() {
+        new UpdateChecker(116501).getVersion(version -> {
+            CodeLogger.info(CCode.getInstance().getDescription().getVersion().equals(version) ? "Everything is up to date" : "You are using an outdated version! Please download the new version so that your server is always fresh! The newest version: " + version);
+        });
+    }
+
 
     static int getVMVersion() {
         String javaVersion = System.getProperty("java.version");

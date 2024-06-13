@@ -32,7 +32,7 @@ public class ConfigUtils {
             try {
                 if (!config.createNewFile()) return;
             } catch (IOException exception) {
-                throw new RuntimeException(exception);
+                CodeLogger.error(exception.getMessage());
             }
         }
 
@@ -55,7 +55,7 @@ public class ConfigUtils {
         try {
             yml.save(config);
         } catch (IOException exception) {
-            exception.printStackTrace();
+            CodeLogger.error(exception.getMessage());
         }
     }
 

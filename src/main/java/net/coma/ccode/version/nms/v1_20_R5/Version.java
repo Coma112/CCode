@@ -1,4 +1,4 @@
-package net.coma.ccode.version.nms.v1_20_R4;
+package net.coma.ccode.version.nms.v1_20_R5;
 
 import net.coma.ccode.utils.CodeLogger;
 import net.coma.ccode.version.ServerVersionSupport;
@@ -16,7 +16,7 @@ public class Version implements ServerVersionSupport {
 
     @Override
     public String getName() {
-        return "1.20_R4";
+        return "1.20_R5";
     }
 
     @Override
