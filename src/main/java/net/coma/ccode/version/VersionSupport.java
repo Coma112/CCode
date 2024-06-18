@@ -12,7 +12,7 @@ public class VersionSupport {
     private final ServerVersionSupport versionSupport;
 
     public VersionSupport(@NotNull Plugin plugin, @NotNull MinecraftVersion version) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        if (version == MinecraftVersion.UNKNOWN) throw new IllegalArgumentException("VERSION NOT FOUND!!! ");
+        if (version == MinecraftVersion.UNKNOWN) throw new IllegalArgumentException("VERSION NOT FOUND!!!");
 
 
         Class<?> clazz = Class.forName("net.coma.ccode.version.nms." + version.name() + ".Version");

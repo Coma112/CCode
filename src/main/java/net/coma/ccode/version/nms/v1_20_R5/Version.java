@@ -10,8 +10,8 @@ public class Version implements ServerVersionSupport {
 
     @Contract(pure = true)
     public Version(@NotNull Plugin plugin) {
-        CodeLogger.info("Loading support for version 1.20.6...");
-        CodeLogger.info("Support for 1.20.6 is loaded!");
+        CodeLogger.info("Loading support for version 1.20.5...");
+        CodeLogger.info("Support for 1.20.5 is loaded!");
     }
 
     @Override

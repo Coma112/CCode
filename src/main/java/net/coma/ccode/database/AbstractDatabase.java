@@ -36,5 +36,5 @@ public abstract class AbstractDatabase {
 
     public abstract List<Code> getCodes(@NotNull OfflinePlayer player);
 
-    public abstract void reconnect(@NotNull ConfigurationSection section);
+    public abstract void reconnect();
 }

@@ -38,7 +38,6 @@ public class StartingUtils {
         VersionSupport support;
 
         try {
-            // Check for Spigot-specific class
             Class.forName("org.spigotmc.SpigotConfig");
         } catch (Exception ignored) {
             isSupported = false;
@@ -46,10 +45,8 @@ public class StartingUtils {
         }
 
         try {
-            // Debugging output
-            CodeLogger.info("Server class name: " + Bukkit.getServer().getClass().getName());
-
             String[] classParts = Bukkit.getServer().getClass().getName().split("\\.");
+
             if (classParts.length < 4) {
                 CodeLogger.error("Unexpected server class name format: " + Bukkit.getServer().getClass().getName());
                 isSupported = false;
@@ -57,6 +54,7 @@ public class StartingUtils {
             }
 
             String[] versionParts = classParts[3].split("_");
+
             if (versionParts.length < 2) {
                 CodeLogger.error("Unexpected version format in class name: " + classParts[3]);
                 isSupported = false;
@@ -64,7 +62,6 @@ public class StartingUtils {
             }
 
             int midVersion = Integer.parseInt(versionParts[1]);
-            CodeLogger.info("Parsed version: " + midVersion);
 
             if (midVersion <= 12) {
                 isSupported = false;
@@ -84,9 +81,8 @@ public class StartingUtils {
     }
 
 
-
     public static void checkUpdates() {
-        new UpdateChecker(116501).getVersion(version -> {
+        new UpdateChecker(116606).getVersion(version -> {
             CodeLogger.info(CCode.getInstance().getDescription().getVersion().equals(version) ? "Everything is up to date" : "You are using an outdated version! Please download the new version so that your server is always fresh! The newest version: " + version);
         });
     }

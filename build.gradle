@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'net.coma'
-version = '1.1'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -32,12 +32,12 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'org.mongodb:mongodb-driver-sync:5.1.0'
     implementation 'com.github.Anon8281:UniversalScheduler:0.1.6'
-    paperweight.paperDevBundle("1.20.6-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -46,9 +46,9 @@ compileJava {
 }
 
 shadowJar {
-    minimize()
     relocate 'org.bstats', 'net.coma112.ccode'
     relocate 'com.github.Anon8281.universalScheduler', 'net.coma112.ccode.universalScheduler'
+    minimize()
 }
 
 tasks.build {

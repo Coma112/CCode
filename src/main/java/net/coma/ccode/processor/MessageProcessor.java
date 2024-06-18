@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public class MessageProcessor {
-    @SuppressWarnings("deprecation")
     public static @NotNull String process(@Nullable String message) {
         if (message == null) return "";
 

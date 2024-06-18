@@ -13,6 +13,13 @@ database:
     certificateverification: false
     poolsize: 10
     lifetime: 1800000
+  mongodb:
+    host: "localhost"
+    port: 27017
+    database: "code"
+    username: ""
+    password: ""
+
 
 # This is the code item in the GUI.
 code-item:

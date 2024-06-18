@@ -78,8 +78,7 @@ public class SQLite extends AbstractDatabase {
         String query = "SELECT * FROM code WHERE CODE = ?";
 
         try {
-            if (!getConnection().isValid(2))
-                reconnect(Objects.requireNonNull(CCode.getInstance().getConfiguration().getSection("database")));
+            if (!getConnection().isValid(2)) reconnect();
 
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
                 preparedStatement.setString(1, name);
@@ -311,11 +310,11 @@ public class SQLite extends AbstractDatabase {
 
 
     @Override
-    public void reconnect(@NotNull ConfigurationSection section) {
+    public void reconnect() {
         try {
             if (getConnection() != null && !getConnection().isClosed()) getConnection().close();
-            new MySQL(Objects.requireNonNull(CCode.getInstance().getConfiguration().getSection("database.mysql")));
-        } catch (SQLException exception) {
+            new SQLite();
+        } catch (SQLException | ClassNotFoundException exception) {
             CodeLogger.error(exception.getMessage());
         }
     }
