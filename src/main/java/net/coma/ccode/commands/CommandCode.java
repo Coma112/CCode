@@ -28,6 +28,7 @@ public class CommandCode {
 
         CCode.getInstance().getLanguage().reload();
         CCode.getInstance().getConfiguration().reload();
+        CCode.getDatabaseManager().reconnect();
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
