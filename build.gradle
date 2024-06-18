@@ -46,8 +46,8 @@ compileJava {
 }
 
 shadowJar {
-    relocate 'org.bstats', 'net.coma112.ccode'
-    relocate 'com.github.Anon8281.universalScheduler', 'net.coma112.ccode.universalScheduler'
+    relocate 'org.bstats', 'net.coma.ccode'
+    relocate 'com.github.Anon8281.universalScheduler', 'net.coma.ccode'
     minimize()
 }
 

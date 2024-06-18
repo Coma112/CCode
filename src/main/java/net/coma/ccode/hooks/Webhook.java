@@ -5,7 +5,6 @@ import lombok.Setter;
 import net.coma.ccode.enums.keys.ConfigKeys;
 import net.coma.ccode.events.CodeCreateEvent;
 import net.coma.ccode.events.CodeDeleteEvent;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 

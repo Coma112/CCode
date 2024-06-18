@@ -2,7 +2,6 @@ package net.coma.ccode.menu;
 
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import net.coma.ccode.CCode;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class MenuUpdater {

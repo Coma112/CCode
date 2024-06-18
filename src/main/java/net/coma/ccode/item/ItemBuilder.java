@@ -71,6 +71,7 @@ public class ItemBuilder implements IItemBuilder {
         List<String> loreList = Arrays.asList(lores);
         List<String> currentLores = meta.getLore();
         currentLores = currentLores == null ? new ArrayList<>() : currentLores;
+
         currentLores.addAll(loreList);
         meta.setLore(currentLores);
 

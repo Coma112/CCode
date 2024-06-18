@@ -1,6 +1,7 @@
 package net.coma.ccode.commands;
 
 import net.coma.ccode.CCode;
+import net.coma.ccode.database.AbstractDatabase;
 import net.coma.ccode.enums.keys.MessageKeys;
 import net.coma.ccode.events.CodeCreateEvent;
 import net.coma.ccode.events.CodeDeleteEvent;
@@ -19,6 +20,8 @@ import java.util.Objects;
 
 @Command({"code", "ccode", "voucher"})
 public class CommandCode {
+    private static final AbstractDatabase database = CCode.getDatabaseManager();
+
     @Subcommand("reload")
     public void reload(@NotNull CommandSender sender) {
         if (!sender.hasPermission("ccode.reload") || !sender.hasPermission("ccode.admin")) {
@@ -28,7 +31,7 @@ public class CommandCode {
 
         CCode.getInstance().getLanguage().reload();
         CCode.getInstance().getConfiguration().reload();
-        CCode.getDatabaseManager().reconnect();
+        database.reconnect();
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
@@ -54,7 +57,7 @@ public class CommandCode {
             return;
         }
 
-        if (CCode.getDatabaseManager().exists(name)) {
+        if (database.exists(name)) {
             sender.sendMessage(MessageKeys.ALREADY_EXISTS.getMessage());
             return;
         }
@@ -65,7 +68,7 @@ public class CommandCode {
         }
 
         Code code = new Code(name, (command + " ").trim(), uses);
-        CCode.getDatabaseManager().createCode(code.codeName(), code.command(), code.uses());
+        database.createCode(code.codeName(), code.command(), code.uses());
         sender.sendMessage(MessageKeys.CREATED.getMessage());
         CCode.getInstance().getServer().getPluginManager().callEvent(new CodeCreateEvent((Player) sender, name, command, uses));
     }
@@ -77,12 +80,12 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
-        CCode.getDatabaseManager().deleteCode(name);
+        database.deleteCode(name);
         sender.sendMessage(MessageKeys.DELETED.getMessage());
         CCode.getInstance().getServer().getPluginManager().callEvent(new CodeDeleteEvent((Player) sender, name));
     }
@@ -94,7 +97,7 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
@@ -104,7 +107,7 @@ public class CommandCode {
             return;
         }
 
-        CCode.getDatabaseManager().changeUses(name, newUse);
+        database.changeUses(name, newUse);
         sender.sendMessage(MessageKeys.EDIT_USES.getMessage());
     }
 
@@ -115,12 +118,12 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
-        CCode.getDatabaseManager().changeName(name, newName);
+        database.changeName(name, newName);
         sender.sendMessage(MessageKeys.EDIT_NAME.getMessage());
     }
 
@@ -131,12 +134,12 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
-        CCode.getDatabaseManager().changeCommand(name, (newCommand + " ").trim());
+        database.changeCommand(name, (newCommand + " ").trim());
         sender.sendMessage(MessageKeys.EDIT_NAME.getMessage());
     }
 
@@ -149,12 +152,12 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
-        CCode.getDatabaseManager().giveCode(name, targetPlayer);
+        database.giveCode(name, targetPlayer);
         sender.sendMessage(MessageKeys.SUCCESSFUL_ADD.getMessage());
     }
 
@@ -170,22 +173,22 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
-        if (CCode.getDatabaseManager().isUsesZero(name)) {
+        if (database.isUsesZero(name)) {
             player.sendMessage(MessageKeys.USES_ZERO.getMessage());
             return;
         }
 
-        if (!CCode.getDatabaseManager().isOwned(name, player)) {
+        if (!database.isOwned(name, player)) {
             player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
             return;
         }
 
-        CCode.getDatabaseManager().redeemCode(name, player);
+        database.redeemCode(name, player);
         player.sendMessage(MessageKeys.REDEEMED.getMessage());
     }
 
@@ -203,12 +206,12 @@ public class CommandCode {
             return;
         }
 
-        if (!CCode.getDatabaseManager().exists(name)) {
+        if (!database.exists(name)) {
             player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
-        if (!CCode.getDatabaseManager().isOwned(name, player)) {
+        if (!database.isOwned(name, player)) {
             player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
             return;
         }
@@ -218,7 +221,7 @@ public class CommandCode {
             return;
         }
 
-        CCode.getDatabaseManager().takeCode(name, player.getName(), targetPlayer.getName());
+        database.takeCode(name, player.getName(), targetPlayer.getName());
         player.sendMessage(MessageKeys.PLAYER_GIVE.getMessage());
         targetPlayer.sendMessage(MessageKeys.TARGET_GIVE
                 .getMessage()

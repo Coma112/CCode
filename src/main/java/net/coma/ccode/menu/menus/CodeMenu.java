@@ -24,24 +24,6 @@ public class CodeMenu extends PaginatedMenu implements Listener {
         super(menuUtils);
     }
 
-    public CodeMenu() {
-        super(null);
-    }
-
-    private static ItemStack createCodeItem(@NotNull Code code) {
-        ItemStack itemStack = IItemBuilder.createItemFromSection("code-item");
-        ItemMeta meta = itemStack.getItemMeta();
-
-        if (meta != null) {
-            String displayName = meta.getDisplayName()
-                    .replace("{name}", code.codeName());
-            meta.setDisplayName(displayName);
-        }
-
-        itemStack.setItemMeta(meta);
-        return itemStack;
-    }
-
     @Override
     public String getMenuName() {
         return ConfigKeys.MENU_TITLE.getString();
@@ -62,18 +44,14 @@ public class CodeMenu extends PaginatedMenu implements Listener {
         int startIndex = page * getMaxItemsPerPage();
         int endIndex = Math.min(startIndex + getMaxItemsPerPage(), codes.size());
 
-        for (int i = startIndex; i < endIndex; i++) {
-            Code code = codes.get(i);
-            ItemStack item = createCodeItem(code);
-            inventory.addItem(item);
-        }
+        for (int i = startIndex; i < endIndex; i++) inventory.addItem(createCodeItem(codes.get(i)));
     }
 
     @Override
     public void handleMenu(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (inventory == null) return;
         if (!event.getInventory().equals(inventory)) return;
+
         event.setCancelled(true);
 
         List<Code> codes = CCode.getDatabaseManager().getCodes(player);
@@ -109,5 +87,19 @@ public class CodeMenu extends PaginatedMenu implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (event.getInventory().equals(inventory)) close();
+    }
+
+    private static ItemStack createCodeItem(@NotNull Code code) {
+        ItemStack itemStack = IItemBuilder.createItemFromSection("code-item");
+        ItemMeta meta = itemStack.getItemMeta();
+
+        if (meta != null) {
+            String displayName = meta.getDisplayName()
+                    .replace("{name}", code.codeName());
+            meta.setDisplayName(displayName);
+        }
+
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 }

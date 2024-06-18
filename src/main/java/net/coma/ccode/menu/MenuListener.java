@@ -7,8 +7,9 @@ import org.bukkit.inventory.InventoryHolder;
 
 public class MenuListener implements Listener {
     @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    public void onClick(final InventoryClickEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
+
         if (holder instanceof PaginatedMenu menu) {
             event.setCancelled(true);
             menu.handleMenu(event);

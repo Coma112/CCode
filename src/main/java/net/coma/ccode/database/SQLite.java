@@ -57,7 +57,7 @@ public class SQLite extends AbstractDatabase {
 
     @Override
     public void createCode(@NotNull String name, @NotNull String cmd, int uses) {
-        String query = "INSERT IGNORE INTO code (CODE, CMD, USES) VALUES (?, ?, ?)";
+        String query = "INSERT OR IGNORE INTO code (CODE, CMD, USES) VALUES (?, ?, ?)";
 
         try {
             if (!exists(name)) {
@@ -96,7 +96,7 @@ public class SQLite extends AbstractDatabase {
         String selectQuery = "SELECT USES, CMD, OWNERS FROM code WHERE CODE = ?";
         String updateQuery = "UPDATE code SET USES = USES - 1 WHERE CODE = ?";
         String deleteQuery = "DELETE FROM code WHERE CODE = ?";
-        String updateOwnersQuery = "UPDATE code SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(CONCAT(', ', OWNERS, ', '), CONCAT(', ', ?, ', '), ', ')) WHERE CODE = ?";
+        String updateOwnersQuery = "UPDATE code SET OWNERS = REPLACE(REPLACE(',' || OWNERS || ',', ', ' || ?, ', '), ', ', ', ') WHERE CODE = ?";
 
         try {
             int currentUses = 0;
@@ -129,27 +129,29 @@ public class SQLite extends AbstractDatabase {
                     updateOwnersStatement.executeUpdate();
                 }
 
-                if (!command.isEmpty()) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", Objects.requireNonNull(player.getName())));
+                if (!command.isEmpty()) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", Objects.requireNonNull(player.getName())));
+                }
             }
         } catch (SQLException exception) {
             CodeLogger.error(exception.getMessage());
         }
     }
+
 
     @Override
     public void giveCode(@NotNull String code, @NotNull OfflinePlayer player) {
-        String updateOwnersQuery = "UPDATE code SET OWNERS = CONCAT(IFNULL(OWNERS,''), ?, ', ') WHERE CODE = ?";
+        String updateOwnersQuery = "UPDATE code SET OWNERS = IFNULL(OWNERS || ', ', '') || ? WHERE CODE = ?";
 
-        try {
-            try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
-                updateOwnersStatement.setString(1, player.getName());
-                updateOwnersStatement.setString(2, code);
-                updateOwnersStatement.executeUpdate();
-            }
+        try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
+            updateOwnersStatement.setString(1, player.getName());
+            updateOwnersStatement.setString(2, code);
+            updateOwnersStatement.executeUpdate();
         } catch (SQLException exception) {
             CodeLogger.error(exception.getMessage());
         }
     }
+
 
     @Override
     public boolean isOwned(@NotNull String code, @NotNull OfflinePlayer player) {

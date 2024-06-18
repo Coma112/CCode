@@ -34,7 +34,6 @@ public class RegisterUtils {
     private static Set<Class<? extends Listener>> getListenerClasses() {
         Set<Class<? extends Listener>> listenerClasses = new HashSet<>();
         listenerClasses.add(MenuListener.class);
-        listenerClasses.add(CodeMenu.class);
         listenerClasses.add(CodeCreateListener.class);
         listenerClasses.add(CodeDeleteListener.class);
         return listenerClasses;

@@ -86,6 +86,5 @@ public interface IItemBuilder {
                 .addLore(loreArray)
                 .finish();
     }
-
 }
 
