@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-
 @Getter
 public class MenuUtils {
     private final Player owner;

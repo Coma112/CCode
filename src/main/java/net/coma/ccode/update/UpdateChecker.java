@@ -19,9 +19,7 @@ public class UpdateChecker {
     public void getVersion(final Consumer<String> consumer) {
         CCode.getInstance().getScheduler().runTaskAsynchronously(() -> {
             try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId + "/~").openStream(); Scanner scanner = new Scanner(is)) {
-                if (scanner.hasNext()) {
-                    consumer.accept(scanner.next());
-                }
+                if (scanner.hasNext()) consumer.accept(scanner.next());
             } catch (IOException exception) {
                 CodeLogger.warn("Unable to check for updates: " + exception.getMessage());
             }

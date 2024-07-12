@@ -3,10 +3,10 @@ package net.coma.ccode.commands;
 import net.coma.ccode.CCode;
 import net.coma.ccode.database.AbstractDatabase;
 import net.coma.ccode.enums.keys.MessageKeys;
-import net.coma.ccode.events.CodeCreateEvent;
-import net.coma.ccode.events.CodeDeleteEvent;
+import net.coma.ccode.events.*;
 import net.coma.ccode.managers.Code;
-import net.coma.ccode.menu.menus.CodeMenu;
+import net.coma.ccode.menu.menus.AvailableMenu;
+import net.coma.ccode.menu.menus.MainMenu;
 import net.coma.ccode.utils.MenuUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -15,47 +15,31 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.Objects;
 
 @Command({"code", "ccode", "voucher"})
 public class CommandCode {
-    private static final AbstractDatabase database = CCode.getDatabaseManager();
-
     @Subcommand("reload")
+    @CommandPermission("ccode.reload")
     public void reload(@NotNull CommandSender sender) {
-        if (!sender.hasPermission("ccode.reload") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
-
         CCode.getInstance().getLanguage().reload();
         CCode.getInstance().getConfiguration().reload();
-        database.reconnect();
+        CCode.getDatabaseManager().reconnect();
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
     @Subcommand("menu")
-    public void menu(@NotNull CommandSender sender) {
-        if (!sender.hasPermission("ccode.menu") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
-
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(MessageKeys.PLAYER_REQUIRED.getMessage());
-            return;
-        }
-
-        new CodeMenu(MenuUtils.getMenuUtils(player)).open();
+    @CommandPermission("ccode.menu")
+    public void menu(@NotNull Player player) {
+        new MainMenu(MenuUtils.getMenuUtils(player)).open();
     }
 
     @Subcommand("create")
+    @CommandPermission("ccode.create")
     public void create(@NotNull CommandSender sender, @NotNull String name, int uses, @NotNull String command) {
-        if (!sender.hasPermission("ccode.create") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (database.exists(name)) {
             sender.sendMessage(MessageKeys.ALREADY_EXISTS.getMessage());
@@ -74,11 +58,9 @@ public class CommandCode {
     }
 
     @Subcommand("delete")
+    @CommandPermission("ccode.delete")
     public void delete(@NotNull CommandSender sender, @NotNull String name) {
-        if (!sender.hasPermission("ccode.delete") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
@@ -91,11 +73,9 @@ public class CommandCode {
     }
 
     @Subcommand("edituse")
+    @CommandPermission("ccode.edituse")
     public void edituse(@NotNull CommandSender sender, @NotNull String name, int newUse) {
-        if (!sender.hasPermission("ccode.edituse") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
@@ -107,50 +87,46 @@ public class CommandCode {
             return;
         }
 
+        CCode.getInstance().getServer().getPluginManager().callEvent(new CodeEditUseEvent(name, newUse));
         database.changeUses(name, newUse);
         sender.sendMessage(MessageKeys.EDIT_USES.getMessage());
     }
 
     @Subcommand("editname")
+    @CommandPermission("ccode.editname")
     public void editname(@NotNull CommandSender sender, @NotNull String name, @NotNull String newName) {
-        if (!sender.hasPermission("ccode.editname") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
+        CCode.getInstance().getServer().getPluginManager().callEvent(new CodeEditNameEvent(name, newName));
         database.changeName(name, newName);
         sender.sendMessage(MessageKeys.EDIT_NAME.getMessage());
     }
 
     @Subcommand("editcommand")
+    @CommandPermission("ccode.editcommand")
     public void editcommand(@NotNull CommandSender sender, @NotNull String name, @NotNull String newCommand) {
-        if (!sender.hasPermission("ccode.editcommand") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
             return;
         }
 
+        CCode.getInstance().getServer().getPluginManager().callEvent(new CodeEditCommandEvent(name, (newCommand + " ").trim()));
         database.changeCommand(name, (newCommand + " ").trim());
         sender.sendMessage(MessageKeys.EDIT_NAME.getMessage());
     }
 
     @Subcommand("add")
+    @CommandPermission("ccode.add")
     public void add(@NotNull CommandSender sender, @NotNull String name, @NotNull String target) {
+        AbstractDatabase database = CCode.getDatabaseManager();
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(target);
-
-        if (!sender.hasPermission("ccode.add") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
 
         if (!database.exists(name)) {
             sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
@@ -162,16 +138,9 @@ public class CommandCode {
     }
 
     @Subcommand("redeem")
-    public void redeem(@NotNull CommandSender sender, @NotNull String name) {
-        if (!sender.hasPermission("ccode.redeem") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
-
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(MessageKeys.PLAYER_REQUIRED.getMessage());
-            return;
-        }
+    @CommandPermission("ccode.redeem")
+    public void redeem(@NotNull Player player, @NotNull String name) {
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (!database.exists(name)) {
             player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
@@ -193,18 +162,10 @@ public class CommandCode {
     }
 
     @Subcommand("give")
-    public void give(@NotNull CommandSender sender, @NotNull String name, @NotNull String target) {
+    @CommandPermission("ccode.give")
+    public void give(@NotNull Player player, @NotNull String name, @NotNull String target) {
         Player targetPlayer = Bukkit.getPlayer(target);
-
-        if (!sender.hasPermission("ccode.give") || !sender.hasPermission("ccode.admin")) {
-            sender.sendMessage(MessageKeys.NO_PERMISSION.getMessage());
-            return;
-        }
-
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(MessageKeys.PLAYER_REQUIRED.getMessage());
-            return;
-        }
+        AbstractDatabase database = CCode.getDatabaseManager();
 
         if (!database.exists(name)) {
             player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());

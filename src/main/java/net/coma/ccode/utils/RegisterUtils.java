@@ -2,10 +2,8 @@ package net.coma.ccode.utils;
 
 import net.coma.ccode.CCode;
 import net.coma.ccode.commands.CommandCode;
-import net.coma.ccode.listeners.CodeCreateListener;
-import net.coma.ccode.listeners.CodeDeleteListener;
+import net.coma.ccode.listeners.*;
 import net.coma.ccode.menu.MenuListener;
-import net.coma.ccode.menu.menus.CodeMenu;
 import org.bukkit.event.Listener;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
 
@@ -36,6 +34,9 @@ public class RegisterUtils {
         listenerClasses.add(MenuListener.class);
         listenerClasses.add(CodeCreateListener.class);
         listenerClasses.add(CodeDeleteListener.class);
+        listenerClasses.add(CodeEditUseListener.class);
+        listenerClasses.add(CodeEditCommandListener.class);
+        listenerClasses.add(CodeEditNameListener.class);
         return listenerClasses;
     }
 }

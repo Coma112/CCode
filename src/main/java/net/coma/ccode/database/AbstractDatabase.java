@@ -24,6 +24,12 @@ public abstract class AbstractDatabase {
 
     public abstract boolean isUsesZero(@NotNull String code);
 
+    public abstract int getUses(@NotNull String code);
+
+    public abstract String getCommand(@NotNull String code);
+
+    public abstract String getName(@NotNull String code);
+
     public abstract void takeCode(@NotNull String code, @NotNull String oldOwner, @NotNull String newOwner);
 
     public abstract void deleteCode(@NotNull String code);
@@ -35,6 +41,8 @@ public abstract class AbstractDatabase {
     public abstract void changeUses(@NotNull String name, int newUses);
 
     public abstract List<Code> getCodes(@NotNull OfflinePlayer player);
+
+    public abstract List<Code> getEveryCode();
 
     public abstract void reconnect();
 }

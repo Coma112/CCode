@@ -7,9 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 public enum MessageKeys {
-    NO_PERMISSION("messages.no-permission"),
     RELOAD("messages.reload"),
-    PLAYER_REQUIRED("messages.player-required"),
     ALREADY_EXISTS("messages.already-created"),
     CANT_BE_NEGATIVE("messages.cant-be-negative"),
     CREATED("messages.created"),

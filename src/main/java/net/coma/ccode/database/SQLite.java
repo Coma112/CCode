@@ -2,6 +2,7 @@ package net.coma.ccode.database;
 
 import lombok.Getter;
 import net.coma.ccode.CCode;
+import net.coma.ccode.enums.keys.ConfigKeys;
 import net.coma.ccode.managers.Code;
 import net.coma.ccode.utils.CodeLogger;
 import org.bukkit.Bukkit;
@@ -196,6 +197,63 @@ public class SQLite extends AbstractDatabase {
     }
 
     @Override
+    public int getUses(@NotNull String code) {
+        String query = "SELECT USES FROM code WHERE CODE = ?";
+
+        try {
+            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                preparedStatement.setString(1, code);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) return resultSet.getInt("USES");
+            }
+        } catch (SQLException exception) {
+            CodeLogger.error(exception.getMessage());
+        }
+
+        return 0;
+    }
+
+    @Override
+    public String getCommand(@NotNull String code) {
+        String query = "SELECT CMD FROM code WHERE CODE = ?";
+
+        try {
+            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                preparedStatement.setString(1, code);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) return resultSet.getString("CMD");
+            }
+        } catch (SQLException exception) {
+            CodeLogger.error(exception.getMessage());
+        }
+
+        return "";
+    }
+
+    @Override
+    public String getName(@NotNull String code) {
+        String query = "SELECT CODE FROM code WHERE CODE = ?";
+
+        try {
+            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                preparedStatement.setString(1, code);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) return resultSet.getString("CODE");
+            }
+        } catch (SQLException exception) {
+            CodeLogger.error(exception.getMessage());
+        }
+
+        return "";
+    }
+
+    @Override
     public void takeCode(@NotNull String code, @NotNull String oldOwner, @NotNull String newOwner) {
         String query = "SELECT OWNERS FROM code WHERE CODE = ?";
         String updateQuery = "UPDATE code SET OWNERS = ? WHERE CODE = ?";
@@ -309,7 +367,26 @@ public class SQLite extends AbstractDatabase {
         return codes;
     }
 
+    @Override
+    public List<Code> getEveryCode() {
+        List<Code> codes = new ArrayList<>();
+        String query = ConfigKeys.USES_MUST_BE_BIGGER_THAN_ONE.getBoolean() ? "SELECT * FROM code WHERE USES >= 1" : "SELECT * FROM code";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("CODE");
+                String command = resultSet.getString("CMD");
+                int uses = resultSet.getInt("USES");
+                codes.add(new Code(name, command, uses));
+            }
+        } catch (SQLException exception) {
+            CodeLogger.error(exception.getMessage());
+        }
+
+        return codes;
+    }
 
     @Override
     public void reconnect() {

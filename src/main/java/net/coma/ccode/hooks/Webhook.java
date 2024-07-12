@@ -2,9 +2,9 @@ package net.coma.ccode.hooks;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.coma.ccode.CCode;
 import net.coma.ccode.enums.keys.ConfigKeys;
-import net.coma.ccode.events.CodeCreateEvent;
-import net.coma.ccode.events.CodeDeleteEvent;
+import net.coma.ccode.events.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 
@@ -51,16 +51,16 @@ public class Webhook {
         return ConfigKeys.WEBHOOK_ENABLED.getBoolean();
     }
 
-    public static void sendWebhook(String description,
-                                   String color,
-                                   String authorName,
-                                   String authorURL,
-                                   String authorIconURL,
-                                   String footerText,
-                                   String footerIconURL,
-                                   String thumbnailURL,
-                                   String title,
-                                   String imageURL) throws IOException, NoSuchFieldException, IllegalAccessException {
+    public static void sendWebhook(@NotNull String description,
+                                   @NotNull String color,
+                                   @NotNull String authorName,
+                                   @NotNull String authorURL,
+                                   @NotNull String authorIconURL,
+                                   @NotNull String footerText,
+                                   @NotNull String footerIconURL,
+                                   @NotNull String thumbnailURL,
+                                   @NotNull String title,
+                                   @NotNull String imageURL) throws IOException, NoSuchFieldException, IllegalAccessException {
 
         if (isEnabled()) {
             Webhook webhook = new Webhook(ConfigKeys.WEBHOOK_URL.getString());
@@ -290,15 +290,44 @@ public class Webhook {
     }
 
     public static String replacePlaceholdersCodeCreate(@NotNull String text, CodeCreateEvent event) {
-        return text.replace("{player}", event.getPlayer().getName())
+        return text
+                .replace("{player}", event.getPlayer().getName())
                 .replace("{code}", event.getName())
                 .replace("{uses}", String.valueOf(event.getUses()))
                 .replace("{command}", event.getCommand());
     }
 
     public static String replacePlaceholdersCodeDelete(@NotNull String text, CodeDeleteEvent event) {
-        return text.replace("{player}", event.getPlayer().getName())
+        return text
+                .replace("{player}", event.getPlayer().getName())
                 .replace("{code}", event.getName());
+    }
+
+    public static String replacePlaceholdersCodeEditUse(@NotNull String text, CodeEditUseEvent event) {
+        String code = event.getName();
+
+        return text
+                .replace("{old}", String.valueOf(CCode.getDatabaseManager().getUses(code)))
+                .replace("{code}", event.getName())
+                .replace("{new}", String.valueOf(event.getNewUses()));
+    }
+
+    public static String replacePlaceholdersCodeEditCommand(@NotNull String text, CodeEditCommandEvent event) {
+        String code = event.getName();
+
+        return text
+                .replace("{old}", CCode.getDatabaseManager().getCommand(code))
+                .replace("{code}", event.getName())
+                .replace("{new}", event.getNewCommand());
+    }
+
+    public static String replacePlaceholdersCodeEditName(@NotNull String text, CodeEditNameEvent event) {
+        String code = event.getName();
+
+        return text
+                .replace("{old}", CCode.getDatabaseManager().getName(code))
+                .replace("{code}", event.getName())
+                .replace("{new}", event.getNewName());
     }
 }
 

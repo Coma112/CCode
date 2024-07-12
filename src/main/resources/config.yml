@@ -1,7 +1,8 @@
 language: "en" # Supported languages -> hu, de, en
+uses-must-be-bigger-than-one: true # If it's true then the in the main menu only those codes will appear where the USES is bigger than 1
 
 database:
-  type: sqlite # Supported types -> mysql, sqlite, mongodb
+  type: sqlite # Supported types -> mysql, sqlite
   mysql:
     host: localhost
     port: 3306
@@ -29,9 +30,13 @@ code-item:
   lore:
     - ""
     - "&aClick if you want to redeem the code!"
+filler-glass-item:
+  material: GRAY_STAINED_GLASS_PANE
+  name: " "
+  lore: []
 
 # Menu Configuration
-menu:
+available-menu:
   title: "&b&lAVAILABLE CODES"
   size: 54
   update-tick: 2
@@ -45,6 +50,38 @@ menu:
     material: GREEN_STAINED_GLASS
     name: "&aForward"
     slot: 53
+  filler-glass: true
+
+all-menu:
+  title: "&b&lALL"
+  size: 54
+  update-tick: 2
+  back-item:
+    amount: 1
+    material: RED_STAINED_GLASS
+    name: "&cBack"
+    slot: 45
+  forward-item:
+    amount: 1
+    material: GREEN_STAINED_GLASS
+    name: "&aForward"
+    slot: 53
+  filler-glass: true
+
+main-menu:
+  title: "&b&lMAIN MENU"
+  size: 9
+  filler-glass: true
+  available-menu-item:
+    amount: 1
+    material: DIAMOND
+    name: "&b&lAVAILABLE CODES"
+    slot: 3
+  all-menu-item:
+    amount: 1
+    material: CAULDRON
+    name: "&b&lALL"
+    slot: 5
 
 # Webhook
 # webhook.enabled -> You can enable and disable the webhook feature
@@ -67,6 +104,39 @@ webhook:
   code-delete-embed:
     title: "CODE DELETED!"
     description: "{player} deleted a code: {code}"
+    color: "CYAN"
+    author-name: ""
+    author-url: ""
+    author-icon: ""
+    footer-text: "SENT BY CCODE"
+    footer-icon: ""
+    thumbnail: ""
+    image: ""
+  code-edituse-embed:
+    title: "USES EDIT!"
+    description: "{code}'s uses has been changed from {old} to {new}"
+    color: "CYAN"
+    author-name: ""
+    author-url: ""
+    author-icon: ""
+    footer-text: "SENT BY CCODE"
+    footer-icon: ""
+    thumbnail: ""
+    image: ""
+  code-editcommand-embed:
+    title: "COMMAND EDIT!"
+    description: "{code}'s command has been changed from {old} to {new}"
+    color: "CYAN"
+    author-name: ""
+    author-url: ""
+    author-icon: ""
+    footer-text: "SENT BY CCODE"
+    footer-icon: ""
+    thumbnail: ""
+    image: ""
+  code-editname-embed:
+    title: "NAME EDIT!"
+    description: "{code}'s name has been changed from {old} to {new}"
     color: "CYAN"
     author-name: ""
     author-url: ""

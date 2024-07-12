@@ -10,7 +10,7 @@ public class MenuListener implements Listener {
     public void onClick(final InventoryClickEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
 
-        if (holder instanceof PaginatedMenu menu) {
+        if (holder instanceof Menu menu) {
             event.setCancelled(true);
             menu.handleMenu(event);
         }

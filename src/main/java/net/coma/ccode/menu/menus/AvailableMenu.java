@@ -19,19 +19,40 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CodeMenu extends PaginatedMenu implements Listener {
-    public CodeMenu(MenuUtils menuUtils) {
+public class AvailableMenu extends PaginatedMenu implements Listener {
+    public AvailableMenu(MenuUtils menuUtils) {
         super(menuUtils);
     }
 
     @Override
     public String getMenuName() {
-        return ConfigKeys.MENU_TITLE.getString();
+        return ConfigKeys.AVAILABLE_MENU_TITLE.getString();
     }
 
     @Override
     public int getSlots() {
-        return ConfigKeys.MENU_SIZE.getInt();
+        return ConfigKeys.AVAILABLE_MENU_SIZE.getInt();
+    }
+
+    @Override
+    public void addMenuBorder() {
+        inventory.setItem(ConfigKeys.AVAILABLE_BACK_SLOT.getInt(), IItemBuilder.createItemFromSection("available-menu.back-item"));
+        inventory.setItem(ConfigKeys.AVAILABLE_FORWARD_SLOT.getInt(), IItemBuilder.createItemFromSection("available-menu.forward-item"));
+    }
+
+    @Override
+    public int getMaxItemsPerPage() {
+        return ConfigKeys.AVAILABLE_MENU_SIZE.getInt() - 2;
+    }
+
+    @Override
+    public int getMenuTick() {
+        return ConfigKeys.AVAILABLE_MENU_TICK.getInt();
+    }
+
+    @Override
+    public boolean enableFillerGlass() {
+        return ConfigKeys.AVAILABLE_FILLER_GLASS.getBoolean();
     }
 
 
@@ -56,7 +77,7 @@ public class CodeMenu extends PaginatedMenu implements Listener {
 
         List<Code> codes = CCode.getDatabaseManager().getCodes(player);
 
-        if (event.getSlot() == ConfigKeys.FORWARD_SLOT.getInt()) {
+        if (event.getSlot() == ConfigKeys.AVAILABLE_FORWARD_SLOT.getInt()) {
             int nextPageIndex = page + 1;
             int totalPages = (int) Math.ceil((double) codes.size() / getMaxItemsPerPage());
 
@@ -69,7 +90,7 @@ public class CodeMenu extends PaginatedMenu implements Listener {
             }
         }
 
-        if (event.getSlot() == ConfigKeys.BACK_SLOT.getInt()) {
+        if (event.getSlot() == ConfigKeys.AVAILABLE_BACK_SLOT.getInt()) {
             if (page == 0) {
                 player.sendMessage(MessageKeys.FIRST_PAGE.getMessage());
                 return;

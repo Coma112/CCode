@@ -5,7 +5,6 @@ import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskSchedule
 import lombok.Getter;
 import net.coma.ccode.config.Config;
 import net.coma.ccode.database.AbstractDatabase;
-import net.coma.ccode.database.MongoDB;
 import net.coma.ccode.database.MySQL;
 import net.coma.ccode.database.SQLite;
 import net.coma.ccode.enums.DatabaseType;
@@ -91,12 +90,6 @@ public final class CCode extends JavaPlugin {
                     databaseManager = new SQLite();
                     SQLite sqlite = (SQLite) databaseManager;
                     sqlite.createTable();
-                }
-
-                case MONGODB, mongodb -> {
-                    databaseManager = new MongoDB(Objects.requireNonNull(getConfiguration().getSection("database.mongodb")));
-                    MongoDB mongoDB = (MongoDB) databaseManager;
-                    mongoDB.createCollection();
                 }
             }
         } catch (SQLException | ClassNotFoundException exception) {

@@ -1,7 +1,5 @@
 messages:
-  no-permission: "&b&lCODE &8| &cNincs jogosultságod ezt megtenni!"
   reload: "&b&lCODE &8| &aSikeresen újratöltöttem a fájlokat!"
-  player-required: "&b&lCODE &8| &cJátékos szükséges!"
   already-created: "&b&lCODE &8| &cEz a kód már létezik!"
   redeemed: "&b&lCODE &8| &aSikeresen beváltottad a kódot!"
   deleted: "&b&lCODE &8| &aSikeresen törölted a kódot!"

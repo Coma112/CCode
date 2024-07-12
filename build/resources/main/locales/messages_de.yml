@@ -1,7 +1,5 @@
 messages:
-  no-permission: "&b&lCODE &8| &cDu hast keine Berechtigung, dies zu tun!"
   reload: "&b&lCODE &8| &aDie Dateien wurden erfolgreich neu geladen!"
-  player-required: "&b&lCODE &8| &cEin Spieler wird benötigt!"
   already-created: "&b&lCODE &8| &cDieser Code existiert bereits!"
   redeemed: "&b&lCODE &8| &aDu hast diesen Code erfolgreich eingelöst!"
   deleted: "&b&lCODE &8| &aDu hast diesen Code erfolgreich gelöscht!"

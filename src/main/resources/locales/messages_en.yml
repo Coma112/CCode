@@ -1,7 +1,5 @@
 messages:
-  no-permission: "&b&lCODE &8| &cYou do not have permission to do this!"
   reload: "&b&lCODE &8| &aI have successfully reloaded the files!"
-  player-required: "&b&lCODE &8| &cPlayer is required!"
   already-created: "&b&lCODE &8| &cThis code already exists!"
   redeemed: "&b&lCODE &8| &aYou have successfully redeemed this code!"
   deleted: "&b&lCODE &8| &aYou have successfully deleted this code!"
