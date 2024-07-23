@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CCode.main.iml" filepath="$PROJECT_DIR$/.idea/modules/CCode.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CCode.test.iml" filepath="$PROJECT_DIR$/.idea/modules/CCode.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ccode.CCode.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ccode.CCode.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.coma.CCode.test.iml" filepath="$PROJECT_DIR$/.idea/modules/net.coma.CCode.test.iml" />
     </modules>
   </component>

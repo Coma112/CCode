@@ -5,6 +5,8 @@ import net.coma.ccode.CCode;
 import net.coma.ccode.processor.MessageProcessor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @Getter
 public enum MessageKeys {
     RELOAD("messages.reload"),
@@ -26,6 +28,7 @@ public enum MessageKeys {
     FIRST_PAGE("messages.first-page"),
     TARGET_GIVE("messages.successful-give-target"),
     PLAYER_GIVE("messages.successful-give-player"),
+    HELP("messages.help"),
     LAST_PAGE("messages.last-page");
 
     private final String path;
@@ -37,4 +40,12 @@ public enum MessageKeys {
     public String getMessage() {
         return MessageProcessor.process(CCode.getInstance().getLanguage().getString(path));
     }
+
+    public List<String> getMessages() {
+        return CCode.getInstance().getLanguage().getList(path)
+                .stream()
+                .map(MessageProcessor::process)
+                .toList();
+    }
+
 }

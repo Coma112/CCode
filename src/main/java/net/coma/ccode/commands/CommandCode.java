@@ -5,7 +5,6 @@ import net.coma.ccode.database.AbstractDatabase;
 import net.coma.ccode.enums.keys.MessageKeys;
 import net.coma.ccode.events.*;
 import net.coma.ccode.managers.Code;
-import net.coma.ccode.menu.menus.AvailableMenu;
 import net.coma.ccode.menu.menus.MainMenu;
 import net.coma.ccode.utils.MenuUtils;
 import org.bukkit.Bukkit;
@@ -14,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.DefaultFor;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
@@ -21,12 +21,24 @@ import java.util.Objects;
 
 @Command({"code", "ccode", "voucher"})
 public class CommandCode {
+    @DefaultFor({"code", "ccode", "voucher"})
+    public void defaultCommand(@NotNull CommandSender sender) {
+        help(sender);
+    }
+
+    @Subcommand("help")
+    public void help(@NotNull CommandSender sender) {
+        MessageKeys.HELP
+                .getMessages()
+                .forEach(sender::sendMessage);
+    }
+
+
     @Subcommand("reload")
     @CommandPermission("ccode.reload")
     public void reload(@NotNull CommandSender sender) {
         CCode.getInstance().getLanguage().reload();
         CCode.getInstance().getConfiguration().reload();
-        CCode.getDatabaseManager().reconnect();
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
