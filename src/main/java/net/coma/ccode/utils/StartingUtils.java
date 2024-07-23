@@ -11,6 +11,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.coma.ccode.version.MinecraftVersion.determineVersion;
+
 @SuppressWarnings("deprecation")
 public class StartingUtils {
     private static boolean isSupported;
@@ -22,7 +24,8 @@ public class StartingUtils {
 
 
     public static void checkVM() {
-        if (getVMVersion() < 11) {
+        int vmVersion = getVMVersion();
+        if (vmVersion < 11) {
             Bukkit.getPluginManager().disablePlugin(CCode.getInstance());
             return;
         }
@@ -35,8 +38,6 @@ public class StartingUtils {
     }
 
     public static void checkVersion() {
-        VersionSupport support;
-
         try {
             Class.forName("org.spigotmc.SpigotConfig");
         } catch (Exception ignored) {
@@ -45,40 +46,34 @@ public class StartingUtils {
         }
 
         try {
-            String[] classParts = Bukkit.getServer().getClass().getName().split("\\.");
+            String bukkitVersion = Bukkit.getVersion();
 
-            if (classParts.length < 4) {
-                CodeLogger.error("Unexpected server class name format: " + Bukkit.getServer().getClass().getName());
+            Pattern pattern = Pattern.compile("\\(MC: (\\d+)\\.(\\d+)(?:\\.(\\d+))?\\)");
+            Matcher matcher = pattern.matcher(bukkitVersion);
+
+            if (matcher.find()) {
+                int majorVersion = Integer.parseInt(matcher.group(1));
+                int minorVersion = Integer.parseInt(matcher.group(2));
+                int patchVersion = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : 0;
+
+                MinecraftVersion version = determineVersion(majorVersion, minorVersion, patchVersion);
+                if (version == MinecraftVersion.UNKNOWN) {
+                    isSupported = false;
+                    return;
+                }
+
+                VersionSupport support = new VersionSupport(CCode.getInstance(), version);
+                ServerVersionSupport nms = support.getVersionSupport();
+                isSupported = nms != null;
+
+            } else {
                 isSupported = false;
-                return;
             }
-
-            String[] versionParts = classParts[3].split("_");
-
-            if (versionParts.length < 2) {
-                CodeLogger.error("Unexpected version format in class name: " + classParts[3]);
-                isSupported = false;
-                return;
-            }
-
-            int midVersion = Integer.parseInt(versionParts[1]);
-
-            if (midVersion <= 12) {
-                isSupported = false;
-                return;
-            }
-
-            CodeLogger.info("Found everything moving onto VersionSupport...");
-            support = new VersionSupport(CCode.getInstance(), MinecraftVersion.getCurrentVersion());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
-            CodeLogger.error(exception.getMessage());
+        } catch (Exception exception) {
             isSupported = false;
-            return;
         }
-
-        ServerVersionSupport nms = support.getVersionSupport();
-        isSupported = true;
     }
+
 
 
     public static void checkUpdates() {
