@@ -22,7 +22,6 @@ public class StartingUtils {
         RegisterUtils.registerCommands();
     }
 
-
     public static void checkVM() {
         int vmVersion = getVMVersion();
         if (vmVersion < 11) {

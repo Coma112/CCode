@@ -2,14 +2,14 @@ package net.coma.ccode.menu;
 
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import net.coma.ccode.CCode;
+import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("deprecation")
 public class MenuUpdater {
     private final Menu menu;
     private MyScheduledTask task;
     private boolean running = true;
 
-    public MenuUpdater(Menu menu) {
+    public MenuUpdater(@NotNull Menu menu) {
         this.menu = menu;
     }
 
@@ -24,7 +24,7 @@ public class MenuUpdater {
     }
 
     public void start(int intervalTicks) {
-        if (task == null) task = CCode.getInstance().getScheduler().runTaskTimer(CCode.getInstance(), this::run, intervalTicks, intervalTicks);
+        if (task == null) task = CCode.getInstance().getScheduler().runTaskTimer(this::run, intervalTicks, intervalTicks);
     }
 
     public void stop() {

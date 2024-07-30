@@ -24,9 +24,9 @@ import static net.coma.ccode.utils.StartingUtils.registerListenersAndCommands;
 public final class CCode extends JavaPlugin {
     @Getter private static CCode instance;
     @Getter private static AbstractDatabase databaseManager;
-    private static Config config;
-    private static Language language;
-    private static TaskScheduler scheduler;
+    @Getter private Language language;
+    @Getter private TaskScheduler scheduler;
+    private Config config;
 
     @Override
     public void onLoad() {
@@ -57,14 +57,6 @@ public final class CCode extends JavaPlugin {
 
     public Config getConfiguration() {
         return config;
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public TaskScheduler getScheduler() {
-        return scheduler;
     }
 
     private void initializeComponents() {

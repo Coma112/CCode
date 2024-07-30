@@ -2,6 +2,7 @@ package net.coma.ccode.menu.menus;
 
 import net.coma.ccode.CCode;
 import net.coma.ccode.enums.keys.ConfigKeys;
+import net.coma.ccode.enums.keys.ItemKeys;
 import net.coma.ccode.enums.keys.MessageKeys;
 import net.coma.ccode.item.IItemBuilder;
 import net.coma.ccode.managers.Code;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @SuppressWarnings("deprecation")
 public class AvailableMenu extends PaginatedMenu implements Listener {
@@ -36,8 +38,8 @@ public class AvailableMenu extends PaginatedMenu implements Listener {
 
     @Override
     public void addMenuBorder() {
-        inventory.setItem(ConfigKeys.AVAILABLE_BACK_SLOT.getInt(), IItemBuilder.createItemFromSection("available-menu.back-item"));
-        inventory.setItem(ConfigKeys.AVAILABLE_FORWARD_SLOT.getInt(), IItemBuilder.createItemFromSection("available-menu.forward-item"));
+        inventory.setItem(ConfigKeys.AVAILABLE_BACK_SLOT.getInt(), ItemKeys.AVAILABLE_BACK_ITEM.getItem());
+        inventory.setItem(ConfigKeys.AVAILABLE_FORWARD_SLOT.getInt(), ItemKeys.AVAILABLE_FORWARD_ITEM.getItem());
     }
 
     @Override
@@ -65,7 +67,7 @@ public class AvailableMenu extends PaginatedMenu implements Listener {
         int startIndex = page * getMaxItemsPerPage();
         int endIndex = Math.min(startIndex + getMaxItemsPerPage(), codes.size());
 
-        for (int i = startIndex; i < endIndex; i++) inventory.addItem(createCodeItem(codes.get(i)));
+        IntStream.range(startIndex, endIndex).forEach(index -> inventory.addItem(createCodeItem(codes.get(index))));
     }
 
     @Override
@@ -111,7 +113,7 @@ public class AvailableMenu extends PaginatedMenu implements Listener {
     }
 
     private static ItemStack createCodeItem(@NotNull Code code) {
-        ItemStack itemStack = IItemBuilder.createItemFromSection("code-item");
+        ItemStack itemStack = ItemKeys.CODE_ITEM.getItem();
         ItemMeta meta = itemStack.getItemMeta();
 
         if (meta != null) {

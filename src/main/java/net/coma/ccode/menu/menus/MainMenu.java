@@ -1,6 +1,7 @@
 package net.coma.ccode.menu.menus;
 
 import net.coma.ccode.enums.keys.ConfigKeys;
+import net.coma.ccode.enums.keys.ItemKeys;
 import net.coma.ccode.item.IItemBuilder;
 import net.coma.ccode.menu.Menu;
 import net.coma.ccode.utils.MenuUtils;
@@ -57,8 +58,8 @@ public class MainMenu extends Menu implements Listener {
 
     @Override
     public void setMenuItems() {
-        inventory.setItem(ConfigKeys.MAIN_AVAILABLE_MENU_SLOT.getInt(), IItemBuilder.createItemFromSection("main-menu.available-menu-item"));
-        inventory.setItem(ConfigKeys.MAIN_ALL_MENU_SLOT.getInt(), IItemBuilder.createItemFromSection("main-menu.all-menu-item"));
+        inventory.setItem(ConfigKeys.MAIN_AVAILABLE_MENU_SLOT.getInt(), ItemKeys.MAIN_AVAILABLE_MENU_ITEM.getItem());
+        inventory.setItem(ConfigKeys.MAIN_ALL_MENU_SLOT.getInt(), ItemKeys.MAIN_ALL_MENU_ITEM.getItem());
         setFillerGlass();
     }
 
