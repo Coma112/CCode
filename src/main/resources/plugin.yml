@@ -1,5 +1,5 @@
 name: CCode
-version: '1.0.8'
+version: '1.0.9'
 main: net.coma.ccode.CCode
 api-version: 1.18
 folia-supported: true
