@@ -1,4 +1,4 @@
-language: "en" # Supported languages -> hu, de, en
+language: "en" # Supported languages -> hu, de, en, es
 uses-must-be-bigger-than-one: true # If it's true then the in the main menu only those codes will appear where the USES is bigger than 1
 
 database:

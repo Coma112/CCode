@@ -65,6 +65,7 @@ public final class CCode extends JavaPlugin {
         saveResource("locales/messages_en.yml", false);
         saveResource("locales/messages_hu.yml", false);
         saveResource("locales/messages_de.yml", false);
+        saveResource("locales/messages_es.yml", false);
 
         language = new Language("messages_" + LanguageType.valueOf(ConfigKeys.LANGUAGE.getString()));
     }
